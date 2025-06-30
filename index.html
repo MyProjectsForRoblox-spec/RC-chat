@@ -277,9 +277,24 @@
         import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp, doc, getDoc, setDoc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // Global variables provided by the Canvas environment
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
+        // IMPORTANT: YOUR ACTUAL FIREBASE PROJECT CONFIGURATION IS NOW HERE!
+        const firebaseConfig = {
+            apiKey: "AIzaSyAqu1Qi5RxbO6Y7crEup_RZlQzVj9ACofo",
+            authDomain: "rcch-69836.firebaseapp.com",
+            projectId: "rcch-69836",
+            storageBucket: "rcch-69836.firebasestorage.app",
+            messagingSenderId: "8389897019",
+            appId: "1:8389897019:web:f10e610b643692139de51e",
+            measurementId: "G-21YV7T999N"
+        };
+
+
+        // This is a unique identifier for your application within Firestore.
+        // You can keep 'rc-chat-prod' or change it to any string you like.
+        const appId = 'rc-chat-prod';
+
+        // The initialAuthToken is provided by the Canvas environment for testing.
+        // On external hosting, it will be null, and anonymous sign-in will be used.
         const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
 
         let db;
@@ -528,6 +543,18 @@
         // Initialize Firebase and set up authentication listener
         window.onload = function () {
             try {
+                // Check if firebaseConfig.projectId is still the placeholder value
+                if (!firebaseConfig.projectId || firebaseConfig.projectId === "YOUR_PROJECT_ID") {
+                    firebaseStatusDisplay.textContent = "Firebase Config Missing! Please update the code.";
+                    console.error("Firebase Initialization Error: 'projectId' not provided in firebaseConfig. Please update the firebaseConfig object in the script with your actual Firebase project details. You can find this in your Firebase project settings -> 'Your apps' section (click the web icon if you don't have a web app yet).");
+                    // Disable all interactive elements if Firebase config is missing
+                    newChatButton.disabled = true;
+                    settingsButton.disabled = true;
+                    messageInput.disabled = true;
+                    sendButton.disabled = true;
+                    return; // Stop further Firebase initialization
+                }
+
                 const app = initializeApp(firebaseConfig);
                 db = getFirestore(app);
                 auth = getAuth(app);
@@ -563,7 +590,7 @@
                             }
                         }, (error) => {
                             console.error("Error fetching chat sessions:", error);
-                            firebaseStatusDisplay.textContent = "Error fetching chats. Check console.";
+                            firebaseStatusDisplay.textContent = "Error fetching chats. Check console and Firebase rules.";
                         });
 
                     } else {
