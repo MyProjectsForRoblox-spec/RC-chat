@@ -192,7 +192,7 @@
         <div class="flex flex-1 overflow-hidden">
             <!-- Side Panel -->
             <aside id="side-panel" class="w-64 bg-gray-900 p-4 border-r border-gray-700 flex flex-col shadow-lg transition-all duration-300 ease-in-out">
-                <button id="new-chat-button" class="bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-4 rounded-full mb-4 btn-glow-red">
+                <button id="new-chat-button" class="bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-4 rounded-full mb-4 btn-glow-red" disabled>
                     <i class="fas fa-plus mr-2"></i> New Chat
                 </button>
                 <div class="flex-1 overflow-y-auto custom-scrollbar">
@@ -201,7 +201,7 @@
                         <!-- Chat sessions will be loaded here -->
                     </ul>
                 </div>
-                <button id="settings-button" class="bg-gray-700 hover:bg-gray-600 text-white font-semibold py-3 px-4 rounded-full mt-4 btn-glow-red">
+                <button id="settings-button" class="bg-gray-700 hover:bg-gray-600 text-white font-semibold py-3 px-4 rounded-full mt-4 btn-glow-red" disabled>
                     <i class="fas fa-cog mr-2"></i> Settings
                 </button>
             </aside>
@@ -450,17 +450,17 @@
             messagesContainer.innerHTML = ''; // Clear previous messages
             loadingChatIndicator.classList.remove('hidden');
             noChatSelectedMessage.classList.add('hidden');
-            messageInput.disabled = false;
-            sendButton.disabled = false;
+            messageInput.disabled = false; // Enable input and send button
+            sendButton.disabled = false; // Enable input and send button
 
             // Remove active class from all chat items
             document.querySelectorAll('#chat-list li').forEach(item => {
-                item.classList.remove('bg-red-700', 'chat-item-active'); /* Removed active class for glow */
+                item.classList.remove('bg-red-700', 'chat-item-active');
             });
             // Add active class to the selected chat item
             const selectedChatItem = document.getElementById(`chat-item-${sessionId}`);
             if (selectedChatItem) {
-                selectedChatItem.classList.add('bg-red-700', 'chat-item-active'); /* Added active class for glow */
+                selectedChatItem.classList.add('bg-red-700', 'chat-item-active');
             }
 
 
@@ -516,7 +516,7 @@
             sessions.forEach(session => {
                 const listItem = document.createElement('li');
                 listItem.id = `chat-item-${session.id}`;
-                listItem.className = `p-3 rounded-lg cursor-pointer transition duration-200 text-gray-200 chat-item-hover ${session.id === currentChatSessionId ? 'bg-red-700 chat-item-active' : 'bg-gray-800'}`; /* Added chat-item-hover and chat-item-active */
+                listItem.className = `p-3 rounded-lg cursor-pointer transition duration-200 text-gray-200 chat-item-hover ${session.id === currentChatSessionId ? 'bg-red-700 chat-item-active' : 'bg-gray-800'}`;
                 listItem.textContent = session.name;
                 listItem.addEventListener('click', () => loadChatSession(session.id));
                 chatList.appendChild(listItem);
@@ -535,14 +535,14 @@
                     if (user) {
                         currentUserId = user.uid;
                         userIdDisplay.textContent = `Your User ID: ${currentUserId}`;
-                        messageInput.disabled = false;
-                        sendButton.disabled = false;
+                        newChatButton.disabled = false; // Enable New Chat button
+                        settingsButton.disabled = false; // Enable Settings button
 
                         // Listen for chat sessions for the current user
                         const chatSessionsCollectionRef = collection(db, `artifacts/${appId}/public/data/chatSessions`);
                         const q = query(chatSessionsCollectionRef, orderBy('lastUpdated', 'desc'));
 
-                        onSnapshot(q, (snapshot) => {
+                        onSnapshot(q, async (snapshot) => { // Made async to await startNewChat
                             const fetchedSessions = snapshot.docs.map(doc => ({
                                 id: doc.id,
                                 ...doc.data()
@@ -553,9 +553,9 @@
                             if (!currentChatSessionId && fetchedSessions.length > 0) {
                                 loadChatSession(fetchedSessions[0].id);
                             } else if (!currentChatSessionId && fetchedSessions.length === 0) {
-                                // If no sessions exist, show the "no chat selected" message
-                                noChatSelectedMessage.classList.remove('hidden');
-                                loadingChatIndicator.classList.add('hidden');
+                                // If no sessions exist, automatically start a new chat
+                                console.log("No existing chat sessions found. Starting a new chat automatically.");
+                                await startNewChat(); // Automatically start a new chat
                             }
                         }, (error) => {
                             console.error("Error fetching chat sessions:", error);
@@ -573,6 +573,8 @@
                         } catch (signInError) {
                             console.error("Error during authentication attempt:", signInError);
                             userIdDisplay.textContent = "Authentication failed. Please check console.";
+                            newChatButton.disabled = true; // Keep disabled on auth failure
+                            settingsButton.disabled = true; // Keep disabled on auth failure
                             messageInput.disabled = true;
                             sendButton.disabled = true;
                         }
