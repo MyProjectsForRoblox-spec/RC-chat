@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RC-chat - AI Chatbot</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Inter Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Custom Scrollbar */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #1a1a1a; /* Dark track for dark theme */
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #444; /* Darker thumb */
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #666;
+        }
+
+        /* Starry Background */
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #000; /* Solid black background */
+            overflow: hidden; /* Hide scrollbars for stars */
+        }
+
+        .star-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            background: radial-gradient(200% 100% at 50% 0%, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.9) 100%);
+        }
+
+        .stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                radial-gradient(2px 2px at 20px 30px, #eee, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 80px 70px, #eee, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 150px 10px, #eee, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 200px 90px, #eee, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 250px 50px, #eee, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 300px 20px, #eee, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 350px 80px, #eee, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 400px 40px, #eee, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 450px 60px, #eee, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 500px 100px, #eee, rgba(0,0,0,0));
+            background-size: 500px 500px;
+            animation: move-stars 200s linear infinite;
+        }
+
+        @keyframes move-stars {
+            from { background-position: 0 0; }
+            to { background-position: 100% 100%; }
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1000; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0,0,0,0.7); /* Black w/ opacity */
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: #2a2a2a; /* Dark background for modal */
+            margin: auto;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            width: 80%;
+            max-width: 500px;
+            color: white;
+        }
+
+        .close-button {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close-button:hover,
+        .close-button:focus {
+            color: #f00; /* Red on hover */
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body class="text-white">
+    <!-- Starry Background -->
+    <div class="star-bg">
+        <div class="stars"></div>
+    </div>
+
+    <div id="app" class="flex flex-col h-screen relative z-10">
+        <!-- Header -->
+        <header class="bg-gray-900 text-white p-4 shadow-lg rounded-b-lg">
+            <h1 class="text-3xl font-bold text-center">RC-chat</h1>
+            <p class="text-sm text-center mt-1 opacity-90">Your AI Chatbot for GitHub</p>
+            <p id="user-id-display" class="text-xs text-center mt-2 opacity-80"></p>
+        </header>
+
+        <!-- Main Content Area -->
+        <div class="flex flex-1 overflow-hidden">
+            <!-- Side Panel -->
+            <aside id="side-panel" class="w-64 bg-gray-900 p-4 border-r border-gray-700 flex flex-col shadow-lg">
+                <button id="new-chat-button" class="bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-4 rounded-full mb-4 transition duration-300 ease-in-out transform hover:scale-105 shadow-md">
+                    <i class="fas fa-plus mr-2"></i> New Chat
+                </button>
+                <div class="flex-1 overflow-y-auto custom-scrollbar">
+                    <h2 class="text-lg font-semibold mb-3 text-gray-300">Previous Chats</h2>
+                    <ul id="chat-list" class="space-y-2">
+                        <!-- Chat sessions will be loaded here -->
+                    </ul>
+                </div>
+                <button id="settings-button" class="bg-gray-700 hover:bg-gray-600 text-white font-semibold py-3 px-4 rounded-full mt-4 transition duration-300 ease-in-out transform hover:scale-105 shadow-md">
+                    <i class="fas fa-cog mr-2"></i> Settings
+                </button>
+            </aside>
+
+            <!-- Chat Area -->
+            <main class="flex-1 flex flex-col bg-gray-800">
+                <div id="messages-container" class="flex-1 overflow-y-auto p-4 space-y-4 custom-scrollbar">
+                    <!-- Chat messages will be loaded here -->
+                    <div id="loading-chat-indicator" class="flex items-center justify-center h-full text-gray-500 hidden">
+                        <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-500"></div>
+                        <p class="ml-3">Loading chat...</p>
+                    </div>
+                    <div id="no-chat-selected-message" class="flex items-center justify-center h-full text-gray-500">
+                        <p>Select a chat or start a new one!</p>
+                    </div>
+                </div>
+
+                <!-- Message Input Area -->
+                <div class="p-4 bg-gray-900 border-t border-gray-700 shadow-lg rounded-t-lg">
+                    <div class="flex space-x-3">
+                        <input
+                            type="text"
+                            id="message-input"
+                            class="flex-1 p-3 border border-gray-600 bg-gray-700 text-white rounded-full focus:outline-none focus:ring-2 focus:ring-red-600 transition duration-200"
+                            placeholder="Type your message..."
+                            disabled
+                        />
+                        <button
+                            id="send-button"
+                            class="px-6 py-3 rounded-full font-semibold text-white transition duration-300 ease-in-out transform hover:scale-105 shadow-lg
+                                bg-red-600 hover:bg-red-700 active:scale-95"
+                            disabled
+                        >
+                            Send
+                        </button>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2 class="text-2xl font-bold mb-4">Settings</h2>
+            <div class="mb-4">
+                <label for="ai-api-select" class="block text-gray-300 text-sm font-bold mb-2">
+                    Select AI Model:
+                </label>
+                <select id="ai-api-select" class="shadow appearance-none border rounded w-full py-2 px-3 bg-gray-700 text-white leading-tight focus:outline-none focus:shadow-outline focus:border-red-600">
+                    <option value="gemini">Gemini (Current)</option>
+                    <option value="chatgpt">ChatGPT (Simulated)</option>
+                    <option value="deepseek">DeepSeek (Simulated)</option>
+                    <option value="grok">Grok (Simulated)</option>
+                    <option value="r4c-custom">R4C-Custom (Alpha - May have bugs)</option>
+                    <option value="other-free">Other Free Models (Simulated)</option>
+                </select>
+                <p class="text-xs text-gray-400 mt-2">
+                    Note: Only Gemini is directly integrated. Other models are simulated and will use Gemini as a fallback.
+                    R4C-Custom uses a free open-source AI API for its database. Free models often require API keys or have usage limits.
+                </p>
+            </div>
+            <button id="save-settings-button" class="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-full transition duration-300 ease-in-out transform hover:scale-105 shadow-md">
+                Save Settings
+            </button>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp, doc, getDoc, setDoc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Global variables provided by the Canvas environment
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+
+        let db;
+        let auth;
+        let currentUserId = null;
+        let currentChatSessionId = null;
+        let selectedAiModel = 'gemini'; // Default AI model
+
+        const messagesContainer = document.getElementById('messages-container');
+        const messageInput = document.getElementById('message-input');
+        const sendButton = document.getElementById('send-button');
+        const userIdDisplay = document.getElementById('user-id-display');
+        const newChatButton = document.getElementById('new-chat-button');
+        const chatList = document.getElementById('chat-list');
+        const settingsButton = document.getElementById('settings-button');
+        const settingsModal = document.getElementById('settings-modal');
+        const closeModalButton = settingsModal.querySelector('.close-button');
+        const aiApiSelect = document.getElementById('ai-api-select');
+        const saveSettingsButton = document.getElementById('save-settings-button');
+        const loadingChatIndicator = document.getElementById('loading-chat-indicator');
+        const noChatSelectedMessage = document.getElementById('no-chat-selected-message');
+
+        // Function to scroll to the bottom of the messages container
+        const scrollToBottom = () => {
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        };
+
+        // Function to display a message in the chat UI
+        const displayMessage = (msg) => {
+            const messageElement = document.createElement('div');
+            messageElement.className = `flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`;
+
+            const messageBubble = document.createElement('div');
+            messageBubble.className = `max-w-[70%] p-3 rounded-xl shadow-md ${
+                msg.sender === 'user'
+                    ? 'bg-red-600 text-white rounded-br-none'
+                    : 'bg-gray-700 text-white rounded-bl-none'
+            }`;
+
+            const messageText = document.createElement('p');
+            messageText.className = 'text-sm break-words';
+            messageText.textContent = msg.message;
+
+            const timestampText = document.createElement('p');
+            timestampText.className = 'text-xs mt-1 opacity-75 text-right';
+            timestampText.textContent = msg.timestamp?.toDate ? msg.timestamp.toDate().toLocaleTimeString() : 'Sending...';
+
+            messageBubble.appendChild(messageText);
+            messageBubble.appendChild(timestampText);
+            messageElement.appendChild(messageBubble);
+            messagesContainer.appendChild(messageElement);
+        };
+
+        // Function to analyze input at a character level (simulated learning)
+        const analyzeCharacterInput = (text) => {
+            const charCounts = {};
+            for (const char of text) {
+                charCounts[char] = (charCounts[char] || 0) + 1;
+            }
+            console.log("Character analysis for input:", charCounts);
+            return charCounts;
+        };
+
+        // Function to send a message
+        const sendMessage = async () => {
+            const messageText = messageInput.value.trim();
+            if (!messageText || !db || !currentUserId || !currentChatSessionId) {
+                console.warn("Cannot send message: Input is empty, DB not ready, or User ID/Chat Session is missing.");
+                return;
+            }
+
+            messageInput.value = '';
+            messageInput.disabled = true;
+            sendButton.disabled = true;
+
+            try {
+                // 1. Store user message in the current chat session's subcollection
+                await addDoc(collection(db, `artifacts/${appId}/public/data/chatSessions/${currentChatSessionId}/messages`), {
+                    userId: currentUserId,
+                    sender: 'user',
+                    message: messageText,
+                    timestamp: serverTimestamp(),
+                    charAnalysis: analyzeCharacterInput(messageText)
+                });
+
+                // Display a temporary loading indicator for AI response
+                const aiLoadingIndicator = document.createElement('div');
+                aiLoadingIndicator.id = 'ai-loading-indicator';
+                aiLoadingIndicator.className = 'flex justify-start';
+                aiLoadingIndicator.innerHTML = `
+                    <div class="max-w-[70%] p-3 rounded-xl shadow-md bg-gray-700 text-white rounded-bl-none">
+                        <div class="flex items-center">
+                            <div class="animate-spin rounded-full h-4 w-4 border-b-2 border-gray-500 mr-2"></div>
+                            <p class="text-sm">RC-chat is thinking...</p>
+                        </div>
+                    </div>
+                `;
+                messagesContainer.appendChild(aiLoadingIndicator);
+                scrollToBottom();
+
+                // 2. Call Gemini API for AI response
+                const chatHistory = [{ role: "user", parts: [{ text: messageText }] }];
+                const payload = { contents: chatHistory };
+                const apiKey = ""; // Canvas will provide this at runtime
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await response.json();
+                let aiResponseText;
+
+                if (result.candidates && result.candidates.length > 0 &&
+                    result.candidates[0].content && result.candidates[0].content.parts &&
+                    result.candidates[0].content.parts.length > 0) {
+                    aiResponseText = result.candidates[0].content.parts[0].text;
+                } else {
+                    console.error("AI response structure unexpected:", result);
+                    aiResponseText = "I'm sorry, I couldn't generate a response at this time. Please try again.";
+                }
+
+                // Add a prefix if a simulated AI model is selected
+                if (selectedAiModel !== 'gemini') {
+                    aiResponseText = `${selectedAiModel.toUpperCase()} (Simulated): ${aiResponseText}`;
+                }
+
+                // 3. Store AI response in the current chat session's subcollection
+                await addDoc(collection(db, `artifacts/${appId}/public/data/chatSessions/${currentChatSessionId}/messages`), {
+                    userId: currentUserId,
+                    sender: 'ai',
+                    message: aiResponseText,
+                    timestamp: serverTimestamp(),
+                    charAnalysis: analyzeCharacterInput(aiResponseText)
+                });
+
+            } catch (error) {
+                console.error("Error sending message or getting AI response:", error);
+                // Store a generic error message if API call fails
+                await addDoc(collection(db, `artifacts/${appId}/public/data/chatSessions/${currentChatSessionId}/messages`), {
+                    userId: currentUserId,
+                    sender: 'ai',
+                    message: "An error occurred while trying to get a response. Please check your connection.",
+                    timestamp: serverTimestamp()
+                });
+            } finally {
+                // Remove AI loading indicator
+                const existingAiLoadingIndicator = document.getElementById('ai-loading-indicator');
+                if (existingAiLoadingIndicator) {
+                    existingAiLoadingIndicator.remove();
+                }
+                messageInput.disabled = false;
+                sendButton.disabled = false;
+                messageInput.focus();
+                scrollToBottom();
+            }
+        };
+
+        // Function to load messages for a specific chat session
+        const loadChatSession = async (sessionId) => {
+            if (!db || !currentUserId) return;
+
+            currentChatSessionId = sessionId;
+            messagesContainer.innerHTML = ''; // Clear previous messages
+            loadingChatIndicator.classList.remove('hidden');
+            noChatSelectedMessage.classList.add('hidden');
+            messageInput.disabled = false;
+            sendButton.disabled = false;
+
+            // Remove active class from all chat items
+            document.querySelectorAll('#chat-list li').forEach(item => {
+                item.classList.remove('bg-red-700');
+            });
+            // Add active class to the selected chat item
+            const selectedChatItem = document.getElementById(`chat-item-${sessionId}`);
+            if (selectedChatItem) {
+                selectedChatItem.classList.add('bg-red-700');
+            }
+
+
+            // Listen for messages in the selected session
+            const messagesCollectionRef = collection(db, `artifacts/${appId}/public/data/chatSessions/${sessionId}/messages`);
+            const q = query(messagesCollectionRef, orderBy('timestamp', 'asc'));
+
+            onSnapshot(q, (snapshot) => {
+                messagesContainer.innerHTML = ''; // Clear existing messages before re-rendering
+                if (snapshot.empty) {
+                    messagesContainer.innerHTML = '<p class="text-gray-500 text-center">No messages in this chat yet. Start typing!</p>';
+                } else {
+                    snapshot.docs.forEach(doc => {
+                        displayMessage(doc.data());
+                    });
+                }
+                loadingChatIndicator.classList.add('hidden');
+                scrollToBottom();
+            }, (error) => {
+                console.error("Error fetching messages for session:", sessionId, error);
+                loadingChatIndicator.classList.add('hidden');
+                messagesContainer.innerHTML = '<p class="text-red-400 text-center">Error loading messages.</p>';
+            });
+        };
+
+        // Function to create a new chat session
+        const startNewChat = async () => {
+            if (!db || !currentUserId) {
+                console.warn("Cannot start new chat: DB not ready or User ID is missing.");
+                return;
+            }
+
+            try {
+                const newChatRef = await addDoc(collection(db, `artifacts/${appId}/public/data/chatSessions`), {
+                    userId: currentUserId,
+                    name: `Chat ${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}`, // Default name
+                    createdAt: serverTimestamp(),
+                    lastUpdated: serverTimestamp()
+                });
+                console.log("New chat session created with ID:", newChatRef.id);
+                loadChatSession(newChatRef.id); // Load the new chat
+            } catch (error) {
+                console.error("Error creating new chat session:", error);
+            }
+        };
+
+        // Function to render chat sessions in the side panel
+        const renderChatSessions = (sessions) => {
+            chatList.innerHTML = '';
+            if (sessions.length === 0) {
+                chatList.innerHTML = '<li class="text-gray-400 text-sm">No chats yet. Click "New Chat" to begin!</li>';
+            }
+            sessions.forEach(session => {
+                const listItem = document.createElement('li');
+                listItem.id = `chat-item-${session.id}`;
+                listItem.className = `p-3 rounded-lg cursor-pointer hover:bg-gray-700 transition duration-200 text-gray-200 ${session.id === currentChatSessionId ? 'bg-red-700' : ''}`;
+                listItem.textContent = session.name;
+                listItem.addEventListener('click', () => loadChatSession(session.id));
+                chatList.appendChild(listItem);
+            });
+        };
+
+        // Initialize Firebase and set up authentication listener
+        window.onload = function () {
+            try {
+                const app = initializeApp(firebaseConfig);
+                db = getFirestore(app);
+                auth = getAuth(app);
+
+                onAuthStateChanged(auth, async (user) => {
+                    if (user) {
+                        currentUserId = user.uid;
+                        userIdDisplay.textContent = `Your User ID: ${currentUserId}`;
+                        messageInput.disabled = false;
+                        sendButton.disabled = false;
+
+                        // Listen for chat sessions for the current user
+                        const chatSessionsCollectionRef = collection(db, `artifacts/${appId}/public/data/chatSessions`);
+                        const q = query(chatSessionsCollectionRef, orderBy('lastUpdated', 'desc'));
+
+                        onSnapshot(q, (snapshot) => {
+                            const fetchedSessions = snapshot.docs.map(doc => ({
+                                id: doc.id,
+                                ...doc.data()
+                            }));
+                            renderChatSessions(fetchedSessions);
+
+                            // If no chat session is selected, and there are existing sessions, load the most recent one
+                            if (!currentChatSessionId && fetchedSessions.length > 0) {
+                                loadChatSession(fetchedSessions[0].id);
+                            } else if (!currentChatSessionId && fetchedSessions.length === 0) {
+                                // If no sessions exist, show the "no chat selected" message
+                                noChatSelectedMessage.classList.remove('hidden');
+                                loadingChatIndicator.classList.add('hidden');
+                            }
+                        }, (error) => {
+                            console.error("Error fetching chat sessions:", error);
+                        });
+
+                    } else {
+                        try {
+                            if (initialAuthToken) {
+                                await signInWithCustomToken(auth, initialAuthToken);
+                            } else {
+                                await signInAnonymously(auth);
+                            }
+                        } catch (signInError) {
+                            console.error("Error during authentication:", signInError);
+                            userIdDisplay.textContent = "Authentication failed. Please check console.";
+                            messageInput.disabled = true;
+                            sendButton.disabled = true;
+                        }
+                    }
+                });
+            } catch (error) {
+                console.error("Error initializing Firebase:", error);
+                userIdDisplay.textContent = "Firebase initialization failed.";
+            }
+        };
+
+        // Event Listeners
+        sendButton.addEventListener('click', sendMessage);
+        messageInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+        newChatButton.addEventListener('click', startNewChat);
+
+        // Settings Modal Logic
+        settingsButton.addEventListener('click', () => {
+            aiApiSelect.value = selectedAiModel; // Set current selection
+            settingsModal.style.display = 'flex';
+        });
+
+        closeModalButton.addEventListener('click', () => {
+            settingsModal.style.display = 'none';
+        });
+
+        window.addEventListener('click', (event) => {
+            if (event.target === settingsModal) {
+                settingsModal.style.display = 'none';
+            }
+        });
+
+        saveSettingsButton.addEventListener('click', () => {
+            selectedAiModel = aiApiSelect.value;
+            console.log("AI Model set to:", selectedAiModel);
+            settingsModal.style.display = 'none';
+        });
+
+    </script>
+</body>
+</html>
