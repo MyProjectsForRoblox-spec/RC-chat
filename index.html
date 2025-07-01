@@ -10,6 +10,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Marked.js for Markdown parsing -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
         /* Custom Scrollbar */
         .custom-scrollbar::-webkit-scrollbar {
@@ -344,6 +346,9 @@
                         <button id="expand-message-button" class="px-5 py-3 rounded-full font-semibold text-white btn-secondary-glow text-base" disabled>
                             <i class="fas fa-expand-alt mr-2"></i> Expand
                         </button>
+                        <button id="rephrase-button" class="px-5 py-3 rounded-full font-semibold text-white btn-secondary-glow text-base" disabled>
+                            <i class="fas fa-redo-alt mr-2"></i> Rephrase
+                        </button>
                     </div>
                 </div>
             </main>
@@ -461,6 +466,34 @@
         // Hidden file input
         let fileInput;
 
+        // Helper function to enable/disable all input-related buttons and fields
+        const enableAllInputButtons = (enable) => {
+            // List all buttons and input fields that need to be enabled/disabled
+            const elementsToControl = [
+                messageInput, sendButton, rephraseButton, summarizeChatButton,
+                deepResearchButton, canvasButton, attachFileButton,
+                generateQuestionsButton, brainstormIdeasButton, translateMessageButton,
+                expandMessageButton, toggleMoreOptionsButton, newChatButton, settingsButton
+            ];
+
+            elementsToControl.forEach(element => {
+                if (element) { // Check if the element exists before trying to access its properties
+                    element.disabled = !enable;
+                }
+            });
+
+            // Special handling for buttons inside the moreOptionsContainer
+            // Only enable them if the container is also visible AND overall enabled state is true
+            if (moreOptionsContainer) {
+                const buttonsInContainer = moreOptionsContainer.querySelectorAll('button');
+                buttonsInContainer.forEach(button => {
+                    if (button) {
+                        button.disabled = !enable || !moreOptionsContainer.classList.contains('show');
+                    }
+                });
+            }
+        };
+
 
         // Function to scroll to the bottom of the messages container
         const scrollToBottom = () => {
@@ -485,7 +518,8 @@
 
             const messageText = document.createElement('p');
             messageText.className = 'text-base break-words leading-relaxed'; /* Slightly larger text, improved line height */
-            messageText.innerHTML = msg.message; // Use innerHTML to render markdown like **Chat Summary**
+            // Use marked.parse to render Markdown content
+            messageText.innerHTML = marked.parse(msg.message);
 
             const timestampText = document.createElement('p');
             timestampText.className = 'text-xs mt-1 opacity-75 text-right text-gray-300';
@@ -543,7 +577,7 @@
 
         // Function to send a message
         const sendMessage = async () => {
-            if (!messageInput || !sendButton || !rephraseButton) return; // Ensure elements exist
+            if (!messageInput || !sendButton) return; // Ensure elements exist
 
             const messageText = messageInput.value.trim();
             if (!messageText || !db || !currentUserId || !currentChatSessionId) {
@@ -552,17 +586,7 @@
             }
 
             messageInput.value = '';
-            messageInput.disabled = true;
-            sendButton.disabled = true;
-            rephraseButton.disabled = true; // Disable rephrase button too
-            if (deepResearchButton) deepResearchButton.disabled = true; // Disable new buttons too
-            if (canvasButton) canvasButton.disabled = true;
-            if (attachFileButton) attachFileButton.disabled = true;
-            if (generateQuestionsButton) generateQuestionsButton.disabled = true;
-            if (brainstormIdeasButton) brainstormIdeasButton.disabled = true;
-            if (translateMessageButton) translateMessageButton.disabled = true;
-            if (expandMessageButton) expandMessageButton.disabled = true;
-            if (toggleMoreOptionsButton) toggleMoreOptionsButton.disabled = true;
+            enableAllInputButtons(false); // Disable all buttons while sending/waiting for AI
 
 
             // Display a temporary loading indicator for AI response
@@ -635,17 +659,7 @@
                 if (existingAiLoadingIndicator) {
                     existingAiLoadingIndicator.remove();
                 }
-                messageInput.disabled = false;
-                sendButton.disabled = false;
-                rephraseButton.disabled = false; // Re-enable rephrase button
-                if (deepResearchButton) deepResearchButton.disabled = false; // Re-enable new buttons
-                if (canvasButton) canvasButton.disabled = false;
-                if (attachFileButton) attachFileButton.disabled = false;
-                if (generateQuestionsButton) generateQuestionsButton.disabled = false;
-                if (brainstormIdeasButton) brainstormIdeasButton.disabled = false;
-                if (translateMessageButton) translateMessageButton.disabled = false;
-                if (expandMessageButton) expandMessageButton.disabled = false;
-                if (toggleMoreOptionsButton) toggleMoreOptionsButton.disabled = false;
+                enableAllInputButtons(true); // Re-enable all buttons
                 messageInput.focus();
                 scrollToBottom();
             }
@@ -653,24 +667,23 @@
 
         // Function to load messages for a specific chat session
         const loadChatSession = async (sessionId) => {
-            if (!db || !currentUserId || !messagesContainer || !loadingChatIndicator || !noChatSelectedMessage || !messageInput || !sendButton || !rephraseButton || !summarizeChatButton) return;
+            console.log(`Attempting to load chat session: ${sessionId}`); // Debug log
+            // Log values of critical elements before the check
+            console.log(`Debug check: db=${db}, currentUserId=${currentUserId}, messagesContainer=${messagesContainer}, loadingChatIndicator=${loadingChatIndicator}, noChatSelectedMessage=${noChatSelectedMessage}, messageInput=${messageInput}, sendButton=${sendButton}, rephraseButton=${rephraseButton}, summarizeChatButton=${summarizeChatButton}`);
+
+            if (!db || !currentUserId || !messagesContainer || !loadingChatIndicator || !noChatSelectedMessage || !messageInput || !sendButton || !rephraseButton || !summarizeChatButton) {
+                console.error("Critical elements missing for loading chat session. See debug log above.");
+                enableAllInputButtons(false); // Disable all buttons if critical elements are truly missing
+                return;
+            }
 
             currentChatSessionId = sessionId;
             messagesContainer.innerHTML = ''; // Clear previous messages
             loadingChatIndicator.classList.remove('hidden');
             noChatSelectedMessage.classList.add('hidden');
-            messageInput.disabled = false; // Enable input and send button
-            sendButton.disabled = false; // Enable input and send button
-            rephraseButton.disabled = false; // Enable rephrase button
-            summarizeChatButton.disabled = false; // Enable summarize button
-            if (deepResearchButton) deepResearchButton.disabled = false; // Enable new buttons
-            if (canvasButton) canvasButton.disabled = false;
-            if (attachFileButton) attachFileButton.disabled = false;
-            if (generateQuestionsButton) generateQuestionsButton.disabled = false;
-            if (brainstormIdeasButton) brainstormIdeasButton.disabled = false;
-            if (translateMessageButton) translateMessageButton.disabled = false;
-            if (expandMessageButton) expandMessageButton.disabled = false;
-            if (toggleMoreOptionsButton) toggleMoreOptionsButton.disabled = false;
+
+            // Enable all input elements and buttons here, as a chat session is now active
+            enableAllInputButtons(true);
 
 
             // Remove active class from all chat items
@@ -689,6 +702,7 @@
             const q = query(messagesCollectionRef, orderBy('timestamp', 'asc'));
 
             onSnapshot(q, (snapshot) => {
+                console.log(`Messages snapshot received for session: ${sessionId}`); // Debug log
                 messagesContainer.innerHTML = ''; // Clear existing messages before re-rendering
                 if (snapshot.empty) {
                     messagesContainer.innerHTML = '<p class="text-gray-500 text-center text-lg">No messages in this chat yet. Start typing!</p>';
@@ -699,10 +713,15 @@
                 }
                 loadingChatIndicator.classList.add('hidden');
                 scrollToBottom();
+                // Re-enable input and buttons here again, just in case something disabled them during snapshot processing
+                enableAllInputButtons(true);
+                messageInput.focus(); // Focus the input field
             }, (error) => {
                 console.error("Error fetching messages for session:", sessionId, error);
                 loadingChatIndicator.classList.add('hidden');
                 messagesContainer.innerHTML = '<p class="text-red-400 text-center text-lg">Error loading messages.</p>';
+                // Failsafe: Re-enable inputs even on error
+                enableAllInputButtons(false);
             });
         };
 
@@ -741,31 +760,22 @@
                 listItem.id = `chat-item-${session.id}`;
                 listItem.className = `p-3 rounded-lg cursor-pointer transition duration-200 text-gray-200 chat-item-hover ${session.id === currentChatSessionId ? 'bg-red-700 chat-item-active' : 'bg-gray-800'}`;
                 listItem.textContent = session.name;
-                listItem.addEventListener('click', () => loadChatSession(session.id));
+                listItem.addEventListener('click', () => {
+                    console.log(`Chat item clicked: ${session.id}`); // Debug log
+                    loadChatSession(session.id)
+                });
                 chatList.appendChild(listItem);
             });
         };
 
         // Function to summarize the current chat
         const summarizeChat = async () => {
-            if (!currentChatSessionId || !db || !currentUserId || !summarizeChatButton || !messageInput || !sendButton || !rephraseButton) {
-                console.warn("Cannot summarize chat: No chat session selected or DB/User ID/Buttons are missing.");
+            if (!currentChatSessionId || !db || !currentUserId) {
+                console.warn("Cannot summarize chat: No chat session selected or DB/User ID is missing.");
                 return;
             }
 
-            summarizeChatButton.disabled = true;
-            messageInput.disabled = true;
-            sendButton.disabled = true;
-            rephraseButton.disabled = true;
-            if (deepResearchButton) deepResearchButton.disabled = true; // Disable new buttons too
-            if (canvasButton) canvasButton.disabled = true;
-            if (attachFileButton) attachFileButton.disabled = true;
-            if (generateQuestionsButton) generateQuestionsButton.disabled = true;
-            if (brainstormIdeasButton) brainstormIdeasButton.disabled = true;
-            if (translateMessageButton) translateMessageButton.disabled = true;
-            if (expandMessageButton) expandMessageButton.disabled = true;
-            if (toggleMoreOptionsButton) toggleMoreOptionsButton.disabled = true;
-
+            enableAllInputButtons(false); // Disable all buttons while summarizing
 
             const aiLoadingIndicator = document.createElement('div');
             aiLoadingIndicator.id = 'ai-loading-indicator-summary';
@@ -813,18 +823,7 @@
                 if (existingAiLoadingIndicator) {
                     existingAiLoadingIndicator.remove();
                 }
-                summarizeChatButton.disabled = false;
-                messageInput.disabled = false;
-                sendButton.disabled = false;
-                rephraseButton.disabled = false;
-                if (deepResearchButton) deepResearchButton.disabled = false; // Re-enable new buttons
-                if (canvasButton) canvasButton.disabled = false;
-                if (attachFileButton) attachFileButton.disabled = false;
-                if (generateQuestionsButton) generateQuestionsButton.disabled = false;
-                if (brainstormIdeasButton) brainstormIdeasButton.disabled = false;
-                if (translateMessageButton) translateMessageButton.disabled = false;
-                if (expandMessageButton) expandMessageButton.disabled = false;
-                if (toggleMoreOptionsButton) toggleMoreOptionsButton.disabled = false;
+                enableAllInputButtons(true); // Re-enable all buttons
                 messageInput.focus();
                 scrollToBottom();
             }
@@ -832,7 +831,7 @@
 
         // Function to rephrase the message in the input field
         const rephraseMessage = async () => {
-            if (!messageInput || !sendButton || !rephraseButton) return; // Ensure elements exist
+            if (!messageInput) return; // Ensure elements exist
 
             const originalText = messageInput.value.trim();
             if (!originalText) {
@@ -840,17 +839,7 @@
                 return;
             }
 
-            messageInput.disabled = true;
-            sendButton.disabled = true;
-            rephraseButton.disabled = true;
-            if (deepResearchButton) deepResearchButton.disabled = true; // Disable new buttons too
-            if (canvasButton) canvasButton.disabled = true;
-            if (attachFileButton) attachFileButton.disabled = true;
-            if (generateQuestionsButton) generateQuestionsButton.disabled = true;
-            if (brainstormIdeasButton) brainstormIdeasButton.disabled = true;
-            if (translateMessageButton) translateMessageButton.disabled = true;
-            if (expandMessageButton) expandMessageButton.disabled = true;
-            if (toggleMoreOptionsButton) toggleMoreOptionsButton.disabled = true;
+            enableAllInputButtons(false); // Disable all buttons while rephrasing
 
             const originalPlaceholder = messageInput.placeholder;
             messageInput.placeholder = "Rephrasing...";
@@ -863,7 +852,6 @@
                 console.error("Error rephrasing message:", error);
                 // Optionally display a temporary message to the user
                 messageInput.value = originalText; // Revert to original text
-                // Using alert for simplicity, could be a custom modal
                 const tempMessage = document.createElement('div');
                 tempMessage.className = 'flex justify-start';
                 tempMessage.innerHTML = `
@@ -876,41 +864,19 @@
                 setTimeout(() => tempMessage.remove(), 3000); // Remove after 3 seconds
             } finally {
                 messageInput.placeholder = originalPlaceholder;
-                messageInput.disabled = false;
-                sendButton.disabled = false;
-                rephraseButton.disabled = false;
-                if (deepResearchButton) deepResearchButton.disabled = false; // Re-enable new buttons
-                if (canvasButton) canvasButton.disabled = false;
-                if (attachFileButton) attachFileButton.disabled = false;
-                if (generateQuestionsButton) generateQuestionsButton.disabled = false;
-                if (brainstormIdeasButton) brainstormIdeasButton.disabled = false;
-                if (translateMessageButton) translateMessageButton.disabled = false;
-                if (expandMessageButton) expandMessageButton.disabled = false;
-                if (toggleMoreOptionsButton) toggleMoreOptionsButton.disabled = false;
+                enableAllInputButtons(true); // Re-enable all buttons
                 messageInput.focus();
             }
         };
 
         // Function to generate follow-up questions
         const generateFollowUpQuestions = async () => {
-            if (!currentChatSessionId || !db || !currentUserId || !generateQuestionsButton) {
-                console.warn("Cannot generate questions: No chat session selected or DB/User ID/Button is missing.");
+            if (!currentChatSessionId || !db || !currentUserId) {
+                console.warn("Cannot generate questions: No chat session selected or DB/User ID is missing.");
                 return;
             }
 
-            // Disable all input/action buttons
-            messageInput.disabled = true;
-            sendButton.disabled = true;
-            rephraseButton.disabled = true;
-            summarizeChatButton.disabled = true;
-            if (deepResearchButton) deepResearchButton.disabled = true;
-            if (canvasButton) canvasButton.disabled = true;
-            if (attachFileButton) attachFileButton.disabled = true;
-            generateQuestionsButton.disabled = true;
-            if (brainstormIdeasButton) brainstormIdeasButton.disabled = true;
-            if (translateMessageButton) translateMessageButton.disabled = true;
-            if (expandMessageButton) expandMessageButton.disabled = true;
-            if (toggleMoreOptionsButton) toggleMoreOptionsButton.disabled = true;
+            enableAllInputButtons(false); // Disable all buttons while generating questions
 
             const aiLoadingIndicator = document.createElement('div');
             aiLoadingIndicator.id = 'ai-loading-indicator-questions';
@@ -958,19 +924,7 @@
                 if (existingAiLoadingIndicator) {
                     existingAiLoadingIndicator.remove();
                 }
-                // Re-enable all input/action buttons
-                messageInput.disabled = false;
-                sendButton.disabled = false;
-                rephraseButton.disabled = false;
-                summarizeChatButton.disabled = false;
-                if (deepResearchButton) deepResearchButton.disabled = false;
-                if (canvasButton) canvasButton.disabled = false;
-                if (attachFileButton) attachFileButton.disabled = false;
-                generateQuestionsButton.disabled = false;
-                if (brainstormIdeasButton) brainstormIdeasButton.disabled = false;
-                if (translateMessageButton) translateMessageButton.disabled = false;
-                if (expandMessageButton) expandMessageButton.disabled = false;
-                if (toggleMoreOptionsButton) toggleMoreOptionsButton.disabled = false;
+                enableAllInputButtons(true); // Re-enable all buttons
                 messageInput.focus();
                 scrollToBottom();
             }
@@ -978,24 +932,12 @@
 
         // Function to brainstorm ideas
         const brainstormIdeas = async () => {
-            if (!currentChatSessionId || !db || !currentUserId || !brainstormIdeasButton) {
-                console.warn("Cannot brainstorm ideas: No chat session selected or DB/User ID/Button is missing.");
+            if (!currentChatSessionId || !db || !currentUserId) {
+                console.warn("Cannot brainstorm ideas: No chat session selected or DB/User ID is missing.");
                 return;
             }
 
-            // Disable all input/action buttons
-            messageInput.disabled = true;
-            sendButton.disabled = true;
-            rephraseButton.disabled = true;
-            summarizeChatButton.disabled = true;
-            if (deepResearchButton) deepResearchButton.disabled = true;
-            if (canvasButton) canvasButton.disabled = true;
-            if (attachFileButton) attachFileButton.disabled = true;
-            if (generateQuestionsButton) generateQuestionsButton.disabled = true;
-            brainstormIdeasButton.disabled = true;
-            if (translateMessageButton) translateMessageButton.disabled = true;
-            if (expandMessageButton) expandMessageButton.disabled = true;
-            if (toggleMoreOptionsButton) toggleMoreOptionsButton.disabled = true;
+            enableAllInputButtons(false); // Disable all buttons while brainstorming
 
             const aiLoadingIndicator = document.createElement('div');
             aiLoadingIndicator.id = 'ai-loading-indicator-brainstorm';
@@ -1043,19 +985,7 @@
                 if (existingAiLoadingIndicator) {
                     existingAiLoadingIndicator.remove();
                 }
-                // Re-enable all input/action buttons
-                messageInput.disabled = false;
-                sendButton.disabled = false;
-                rephraseButton.disabled = false;
-                summarizeChatButton.disabled = false;
-                if (deepResearchButton) deepResearchButton.disabled = false;
-                if (canvasButton) canvasButton.disabled = false;
-                if (attachFileButton) attachFileButton.disabled = false;
-                if (generateQuestionsButton) generateQuestionsButton.disabled = false;
-                brainstormIdeasButton.disabled = false;
-                if (translateMessageButton) translateMessageButton.disabled = false;
-                if (expandMessageButton) expandMessageButton.disabled = false;
-                if (toggleMoreOptionsButton) toggleMoreOptionsButton.disabled = false;
+                enableAllInputButtons(true); // Re-enable all buttons
                 messageInput.focus();
                 scrollToBottom();
             }
@@ -1063,7 +993,7 @@
 
         // Function to translate the message in the input field
         const translateMessage = async () => {
-            if (!messageInput || !sendButton || !translateMessageButton) return;
+            if (!messageInput) return;
 
             const originalText = messageInput.value.trim();
             if (!originalText) {
@@ -1071,17 +1001,7 @@
                 return;
             }
 
-            messageInput.disabled = true;
-            sendButton.disabled = true;
-            rephraseButton.disabled = true;
-            if (deepResearchButton) deepResearchButton.disabled = true;
-            if (canvasButton) canvasButton.disabled = true;
-            if (attachFileButton) attachFileButton.disabled = true;
-            if (generateQuestionsButton) generateQuestionsButton.disabled = true;
-            if (brainstormIdeasButton) brainstormIdeasButton.disabled = true;
-            translateMessageButton.disabled = true;
-            if (expandMessageButton) expandMessageButton.disabled = true;
-            if (toggleMoreOptionsButton) toggleMoreOptionsButton.disabled = true;
+            enableAllInputButtons(false); // Disable all buttons while translating
 
             const originalPlaceholder = messageInput.placeholder;
             messageInput.placeholder = "Translating...";
@@ -1106,24 +1026,14 @@
                 setTimeout(() => tempMessage.remove(), 3000);
             } finally {
                 messageInput.placeholder = originalPlaceholder;
-                messageInput.disabled = false;
-                sendButton.disabled = false;
-                rephraseButton.disabled = false;
-                if (deepResearchButton) deepResearchButton.disabled = false;
-                if (canvasButton) canvasButton.disabled = false;
-                if (attachFileButton) attachFileButton.disabled = false;
-                if (generateQuestionsButton) generateQuestionsButton.disabled = false;
-                if (brainstormIdeasButton) brainstormIdeasButton.disabled = false;
-                translateMessageButton.disabled = false;
-                if (expandMessageButton) expandMessageButton.disabled = false;
-                if (toggleMoreOptionsButton) toggleMoreOptionsButton.disabled = false;
+                enableAllInputButtons(true); // Re-enable all buttons
                 messageInput.focus();
             }
         };
 
         // Function to expand the message in the input field
         const expandMessage = async () => {
-            if (!messageInput || !sendButton || !expandMessageButton) return;
+            if (!messageInput) return;
 
             const originalText = messageInput.value.trim();
             if (!originalText) {
@@ -1131,17 +1041,7 @@
                 return;
             }
 
-            messageInput.disabled = true;
-            sendButton.disabled = true;
-            rephraseButton.disabled = true;
-            if (deepResearchButton) deepResearchButton.disabled = true;
-            if (canvasButton) canvasButton.disabled = true;
-            if (attachFileButton) attachFileButton.disabled = true;
-            if (generateQuestionsButton) generateQuestionsButton.disabled = true;
-            if (brainstormIdeasButton) brainstormIdeasButton.disabled = true;
-            if (translateMessageButton) translateMessageButton.disabled = true;
-            expandMessageButton.disabled = true;
-            if (toggleMoreOptionsButton) toggleMoreOptionsButton.disabled = true;
+            enableAllInputButtons(false); // Disable all buttons while expanding
 
             const originalPlaceholder = messageInput.placeholder;
             messageInput.placeholder = "Expanding...";
@@ -1165,17 +1065,7 @@
                 setTimeout(() => tempMessage.remove(), 3000);
             } finally {
                 messageInput.placeholder = originalPlaceholder;
-                messageInput.disabled = false;
-                sendButton.disabled = false;
-                rephraseButton.disabled = false;
-                if (deepResearchButton) deepResearchButton.disabled = false;
-                if (canvasButton) canvasButton.disabled = false;
-                if (attachFileButton) attachFileButton.disabled = false;
-                if (generateQuestionsButton) generateQuestionsButton.disabled = false;
-                if (brainstormIdeasButton) brainstormIdeasButton.disabled = false;
-                if (translateMessageButton) translateMessageButton.disabled = false;
-                expandMessageButton.disabled = false;
-                if (toggleMoreOptionsButton) toggleMoreOptionsButton.disabled = false;
+                enableAllInputButtons(true); // Re-enable all buttons
                 messageInput.focus();
             }
         };
@@ -1183,24 +1073,12 @@
 
         // Deep Research functionality
         const handleDeepResearch = async () => {
-            if (!currentChatSessionId || !db || !currentUserId || !deepResearchButton) {
-                console.warn("Cannot perform deep research: No chat session selected or DB/User ID/Button is missing.");
+            if (!currentChatSessionId || !db || !currentUserId) {
+                console.warn("Cannot perform deep research: No chat session selected or DB/User ID is missing.");
                 return;
             }
 
-            // Disable all input/action buttons
-            messageInput.disabled = true;
-            sendButton.disabled = true;
-            rephraseButton.disabled = true;
-            summarizeChatButton.disabled = true;
-            deepResearchButton.disabled = true;
-            if (canvasButton) canvasButton.disabled = true;
-            if (attachFileButton) attachFileButton.disabled = true;
-            if (generateQuestionsButton) generateQuestionsButton.disabled = true;
-            if (brainstormIdeasButton) brainstormIdeasButton.disabled = true;
-            if (translateMessageButton) translateMessageButton.disabled = true;
-            if (expandMessageButton) expandMessageButton.disabled = true;
-            if (toggleMoreOptionsButton) toggleMoreOptionsButton.disabled = true;
+            enableAllInputButtons(false); // Disable all buttons while researching
 
             const aiLoadingIndicator = document.createElement('div');
             aiLoadingIndicator.id = 'ai-loading-indicator-research';
@@ -1248,19 +1126,7 @@
                 if (existingAiLoadingIndicator) {
                     existingAiLoadingIndicator.remove();
                 }
-                // Re-enable all input/action buttons
-                messageInput.disabled = false;
-                sendButton.disabled = false;
-                rephraseButton.disabled = false;
-                summarizeChatButton.disabled = false;
-                deepResearchButton.disabled = false;
-                if (canvasButton) canvasButton.disabled = false;
-                if (attachFileButton) attachFileButton.disabled = false;
-                if (generateQuestionsButton) generateQuestionsButton.disabled = false;
-                if (brainstormIdeasButton) brainstormIdeasButton.disabled = false;
-                if (translateMessageButton) translateMessageButton.disabled = false;
-                if (expandMessageButton) expandMessageButton.disabled = false;
-                if (toggleMoreOptionsButton) toggleMoreOptionsButton.disabled = false;
+                enableAllInputButtons(true); // Re-enable all buttons
                 messageInput.focus();
                 scrollToBottom();
             }
@@ -1324,17 +1190,12 @@
 
         const handleFileSelected = async (event) => {
             const files = event.target.files;
-            if (files.length > 0 && db && currentUserId && currentChatSessionId) {
+            if (files.length > 0) {
                 const fileName = files[0].name;
-                const message = `Attached file: **${fileName}**`;
-
-                await addDoc(collection(db, `artifacts/${appId}/users/${currentUserId}/chatSessions/${currentChatSessionId}/messages`), {
-                    userId: currentUserId,
-                    sender: 'ai', // Display as AI message for confirmation
-                    message: message,
-                    timestamp: serverTimestamp()
-                });
-                scrollToBottom();
+                // Append the file name to the current message input value
+                messageInput.value = (messageInput.value.trim() ? messageInput.value.trim() + ' ' : '') + `(Attached: ${fileName})`;
+                fileInput.value = ''; // Clear the file input so change event fires again for same file
+                messageInput.focus(); // Focus the input field for user to type
             }
         };
 
@@ -1344,10 +1205,15 @@
                 moreOptionsContainer.classList.toggle('hidden');
                 moreOptionsContainer.classList.toggle('show'); // For fade-in-out animation
                 // Re-enable/disable buttons within the container based on its visibility and chat session status
-                const areButtonsEnabled = currentChatSessionId !== null;
+                // Only enable if the main buttons are enabled and the container is shown
+                const areMainButtonsEnabled = messageInput && !messageInput.disabled; // Check if main input is enabled
+                const isContainerShown = moreOptionsContainer.classList.contains('show');
+
                 const buttonsInContainer = moreOptionsContainer.querySelectorAll('button');
                 buttonsInContainer.forEach(button => {
-                    button.disabled = !moreOptionsContainer.classList.contains('show') || !areButtonsEnabled;
+                    if (button) {
+                        button.disabled = !(areMainButtonsEnabled && isContainerShown);
+                    }
                 });
             }
         };
@@ -1371,7 +1237,7 @@
             noChatSelectedMessage = document.getElementById('no-chat-selected-message');
             firebaseStatusDisplay = document.getElementById('firebase-status');
             summarizeChatButton = document.getElementById('summarize-chat-button');
-            rephraseButton = document.getElementById('rephrase-button');
+            rephraseButton = document.getElementById('rephrase-button'); // Re-assign rephraseButton
             // New buttons assignment
             deepResearchButton = document.getElementById('deep-research-button');
             canvasButton = document.getElementById('canvas-button');
@@ -1397,20 +1263,7 @@
 
 
             // Initial state for buttons and displays
-            if (newChatButton) newChatButton.disabled = true;
-            if (settingsButton) settingsButton.disabled = true;
-            if (messageInput) messageInput.disabled = true;
-            if (sendButton) sendButton.disabled = true;
-            if (summarizeChatButton) summarizeChatButton.disabled = true;
-            if (rephraseButton) rephraseButton.disabled = true;
-            if (deepResearchButton) deepResearchButton.disabled = true;
-            if (canvasButton) canvasButton.disabled = true;
-            if (attachFileButton) attachFileButton.disabled = true;
-            if (generateQuestionsButton) generateQuestionsButton.disabled = true;
-            if (brainstormIdeasButton) brainstormIdeasButton.disabled = true;
-            if (translateMessageButton) translateMessageButton.disabled = true;
-            if (expandMessageButton) expandMessageButton.disabled = true;
-            if (toggleMoreOptionsButton) toggleMoreOptionsButton.disabled = true;
+            enableAllInputButtons(false); // Ensure all buttons are disabled initially
 
             try {
                 // Check if firebaseConfig.projectId is still the placeholder value
@@ -1429,26 +1282,19 @@
                     console.log("onAuthStateChanged triggered. User:", user); // Diagnostic log
                     if (user) {
                         currentUserId = user.uid;
+                        console.log("User authenticated. currentUserId:", currentUserId); // Debug
                         if (userIdDisplay) userIdDisplay.textContent = `Your User ID: ${currentUserId}`;
-                        if (newChatButton) newChatButton.disabled = false; // Enable New Chat button
-                        if (settingsButton) settingsButton.disabled = false; // Enable Settings button
-                        if (summarizeChatButton) summarizeChatButton.disabled = false; // Enable summarize button
-                        if (rephraseButton) rephraseButton.disabled = false; // Enable rephrase button
-                        if (deepResearchButton) deepResearchButton.disabled = false; // Enable new buttons
-                        if (canvasButton) canvasButton.disabled = false;
-                        if (attachFileButton) attachFileButton.disabled = false;
-                        if (generateQuestionsButton) generateQuestionsButton.disabled = false;
-                        if (brainstormIdeasButton) brainstormIdeasButton.disabled = false;
-                        if (translateMessageButton) translateMessageButton.disabled = false;
-                        if (expandMessageButton) expandMessageButton.disabled = false;
-                        if (toggleMoreOptionsButton) toggleMoreOptionsButton.disabled = false;
                         if (firebaseStatusDisplay) firebaseStatusDisplay.textContent = "Authenticated.";
+
+                        // Immediately enable all buttons after successful authentication
+                        enableAllInputButtons(true);
 
                         // Listen for chat sessions for the current user under their private path
                         const chatSessionsCollectionRef = collection(db, `artifacts/${appId}/users/${currentUserId}/chatSessions`);
                         const q = query(chatSessionsCollectionRef, orderBy('lastUpdated', 'desc'));
 
                         onSnapshot(q, async (snapshot) => { // Made async to await startNewChat
+                            console.log("Chat sessions snapshot received."); // Debug
                             const fetchedSessions = snapshot.docs.map(doc => ({
                                 id: doc.id,
                                 ...doc.data()
@@ -1457,58 +1303,48 @@
 
                             // If no chat session is selected, and there are existing sessions, load the most recent one
                             if (!currentChatSessionId && fetchedSessions.length > 0) {
-                                loadChatSession(fetchedSessions[0].id);
+                                console.log("No current chat selected, loading most recent."); // Debug
+                                await loadChatSession(fetchedSessions[0].id);
                             } else if (!currentChatSessionId && fetchedSessions.length === 0) {
                                 // If no sessions exist, automatically start a new chat
-                                console.log("No existing chat sessions found. Starting a new chat automatically.");
+                                console.log("No existing chat sessions found. Starting a new chat automatically."); // Debug
                                 await startNewChat(); // Automatically start a new chat
+                            } else {
+                                // If a chat was already selected (e.g., after a page refresh), ensure inputs are enabled and focused
+                                console.log(`Chat session ${currentChatSessionId} is active. Ensuring inputs are enabled.`); // Debug
+                                enableAllInputButtons(true); // Re-enable in case they were disabled by another process
+                                messageInput.focus();
                             }
                         }, (error) => {
                             console.error("Error fetching chat sessions:", error);
                             if (firebaseStatusDisplay) firebaseStatusDisplay.textContent = "Error fetching chats. Check console and Firebase rules.";
+                            enableAllInputButtons(false); // Disable on error
                         });
 
                     } else {
+                        console.log("User is null. Attempting sign-in."); // Debug
                         try {
                             if (initialAuthToken) {
                                 try {
                                     await signInWithCustomToken(auth, initialAuthToken);
-                                    console.log("Attempted sign-in with custom token."); // Diagnostic log
+                                    console.log("Signed in with custom token.");
                                 } catch (customTokenError) {
                                     if (customTokenError.code === 'auth/custom-token-mismatch' || customTokenError.code === 'auth/invalid-custom-token') {
                                         console.warn("Custom token mismatch/invalid. Falling back to anonymous sign-in.");
-                                        // Fallback to anonymous sign-in
-                                        // IMPORTANT: Ensure Anonymous authentication is enabled in your Firebase project settings!
-                                        // Go to Firebase Console -> Authentication -> Sign-in method -> Anonymous -> Enable.
                                         await signInAnonymously(auth);
                                     } else {
                                         throw customTokenError; // Re-throw other errors
                                     }
                                 }
                             } else {
-                                // Ensure anonymous sign-in is enabled in Firebase Console for this to work
-                                // Go to Firebase Console -> Authentication -> Sign-in method -> Anonymous -> Enable.
                                 await signInAnonymously(auth);
-                                console.log("Attempted anonymous sign-in."); // Diagnostic log
+                                console.log("Signed in anonymously.");
                             }
                         } catch (signInError) {
                             console.error("Error during authentication attempt:", signInError);
                             if (userIdDisplay) userIdDisplay.textContent = "Authentication failed. Please check console.";
                             if (firebaseStatusDisplay) firebaseStatusDisplay.textContent = "Authentication Failed.";
-                            if (newChatButton) newChatButton.disabled = true; // Keep disabled on auth failure
-                            if (settingsButton) settingsButton.disabled = true; // Keep disabled on auth failure
-                            if (messageInput) messageInput.disabled = true;
-                            if (sendButton) sendButton.disabled = true;
-                            if (summarizeChatButton) summarizeChatButton.disabled = true; // Disable new buttons too
-                            if (rephraseButton) rephraseButton.disabled = true; // Disable new buttons too
-                            if (deepResearchButton) deepResearchButton.disabled = true;
-                            if (canvasButton) canvasButton.disabled = true;
-                            if (attachFileButton) attachFileButton.disabled = true;
-                            if (generateQuestionsButton) generateQuestionsButton.disabled = true;
-                            if (brainstormIdeasButton) brainstormIdeasButton.disabled = true;
-                            if (translateMessageButton) translateMessageButton.disabled = true;
-                            if (expandMessageButton) expandMessageButton.disabled = true;
-                            if (toggleMoreOptionsButton) toggleMoreOptionsButton.disabled = true;
+                            enableAllInputButtons(false); // Keep disabled on auth failure
                         }
                     }
                 });
@@ -1516,6 +1352,7 @@
                 console.error("Error initializing Firebase:", error);
                 if (firebaseStatusDisplay) firebaseStatusDisplay.textContent = "Firebase Init Failed. Check console.";
                 if (userIdDisplay) userIdDisplay.textContent = "Firebase initialization failed.";
+                enableAllInputButtons(false); // Disable on Firebase init failure
             }
 
             // Event Listeners - only add if elements exist
