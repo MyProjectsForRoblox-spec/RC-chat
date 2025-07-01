@@ -387,8 +387,8 @@
             scrollToBottom();
 
             try {
-                // 1. Store user message in the current chat session's subcollection
-                await addDoc(collection(db, `artifacts/${appId}/public/data/chatSessions/${currentChatSessionId}/messages`), {
+                // 1. Store user message in the current chat session's subcollection under the user's private path
+                await addDoc(collection(db, `artifacts/${appId}/users/${currentUserId}/chatSessions/${currentChatSessionId}/messages`), {
                     userId: currentUserId,
                     sender: 'user',
                     message: messageText,
@@ -428,8 +428,8 @@
                     }
                 }
 
-                // 3. Store AI response in the current chat session's subcollection
-                await addDoc(collection(db, `artifacts/${appId}/public/data/chatSessions/${currentChatSessionId}/messages`), {
+                // 3. Store AI response in the current chat session's subcollection under the user's private path
+                await addDoc(collection(db, `artifacts/${appId}/users/${currentUserId}/chatSessions/${currentChatSessionId}/messages`), {
                     userId: currentUserId,
                     sender: 'ai',
                     message: aiResponseText,
@@ -485,8 +485,8 @@
             }
 
 
-            // Listen for messages in the selected session
-            const messagesCollectionRef = collection(db, `artifacts/${appId}/public/data/chatSessions/${sessionId}/messages`);
+            // Listen for messages in the selected session under the user's private path
+            const messagesCollectionRef = collection(db, `artifacts/${appId}/users/${currentUserId}/chatSessions/${sessionId}/messages`);
             const q = query(messagesCollectionRef, orderBy('timestamp', 'asc'));
 
             onSnapshot(q, (snapshot) => {
@@ -515,7 +515,8 @@
             }
 
             try {
-                const newChatRef = await addDoc(collection(db, `artifacts/${appId}/public/data/chatSessions`), {
+                // Create new chat session under the user's private path
+                const newChatRef = await addDoc(collection(db, `artifacts/${appId}/users/${currentUserId}/chatSessions`), {
                     userId: currentUserId,
                     name: `Chat ${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}`, // Default name
                     createdAt: serverTimestamp(),
@@ -573,8 +574,8 @@
                         settingsButton.disabled = false; // Enable Settings button
                         firebaseStatusDisplay.textContent = "Authenticated.";
 
-                        // Listen for chat sessions for the current user
-                        const chatSessionsCollectionRef = collection(db, `artifacts/${appId}/public/data/chatSessions`);
+                        // Listen for chat sessions for the current user under their private path
+                        const chatSessionsCollectionRef = collection(db, `artifacts/${appId}/users/${currentUserId}/chatSessions`);
                         const q = query(chatSessionsCollectionRef, orderBy('lastUpdated', 'desc'));
 
                         onSnapshot(q, async (snapshot) => { // Made async to await startNewChat
