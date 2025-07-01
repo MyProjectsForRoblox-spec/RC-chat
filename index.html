@@ -16,11 +16,11 @@
             width: 8px;
         }
         .custom-scrollbar::-webkit-scrollbar-track {
-            background: #1a1a1a;
+            background: #1a1a1a; /* Dark track for dark theme */
             border-radius: 10px;
         }
         .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #444;
+            background: #444; /* Darker thumb */
             border-radius: 10px;
         }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
@@ -30,8 +30,8 @@
         /* Starry Background */
         body {
             font-family: 'Inter', sans-serif;
-            background: #000;
-            overflow: hidden;
+            background: #000; /* Solid black background */
+            overflow: hidden; /* Hide scrollbars for stars */
         }
 
         .star-bg {
@@ -42,6 +42,7 @@
             height: 100%;
             pointer-events: none;
             z-index: -1;
+            /* Radial gradient for subtle depth */
             background: radial-gradient(200% 100% at 50% 0%, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.9) 100%);
         }
 
@@ -51,6 +52,7 @@
             left: 0;
             width: 100%;
             height: 100%;
+            /* More star layers for a denser effect */
             background-image:
                 radial-gradient(1px 1px at 50px 100px, #fff, rgba(0,0,0,0)),
                 radial-gradient(1px 1px at 150px 200px, #fff, rgba(0,0,0,0)),
@@ -62,6 +64,7 @@
                 radial-gradient(1px 1px at 750px 70px, #fff, rgba(0,0,0,0)),
                 radial-gradient(1px 1px at 850px 220px, #fff, rgba(0,0,0,0)),
                 radial-gradient(1px 1px at 950px 150px, #fff, rgba(0,0,0,0)),
+
                 radial-gradient(1.5px 1.5px at 20px 30px, #eee, rgba(0,0,0,0)),
                 radial-gradient(1.5px 1.5px at 80px 70px, #eee, rgba(0,0,0,0)),
                 radial-gradient(1.5px 1.5px at 150px 10px, #eee, rgba(0,0,0,0)),
@@ -72,6 +75,7 @@
                 radial-gradient(1.5px 1.5px at 400px 40px, #eee, rgba(0,0,0,0)),
                 radial-gradient(1.5px 1.5px at 450px 60px, #eee, rgba(0,0,0,0)),
                 radial-gradient(1.5px 1.5px at 500px 100px, #eee, rgba(0,0,0,0)),
+
                 radial-gradient(2px 2px at 10px 10px, #ddd, rgba(0,0,0,0)),
                 radial-gradient(2px 2px at 60px 120px, #ddd, rgba(0,0,0,0)),
                 radial-gradient(2px 2px at 110px 20px, #ddd, rgba(0,0,0,0)),
@@ -82,36 +86,36 @@
                 radial-gradient(2px 2px at 360px 100px, #ddd, rgba(0,0,0,0)),
                 radial-gradient(2px 2px at 410px 210px, #ddd, rgba(0,0,0,0)),
                 radial-gradient(2px 2px at 460px 40px, #ddd, rgba(0,0,0,0));
-            background-size: 500px 500px, 700px 700px, 900px 900px;
+            background-size: 500px 500px, 700px 700px, 900px 900px; /* Different sizes for parallax effect */
             animation: move-stars 200s linear infinite;
         }
 
         @keyframes move-stars {
             from { background-position: 0 0, 0 0, 0 0; }
-            to { background-position: 100% 100%, 200% 200%, 300% 300%; }
+            to { background-position: 100% 100%, 200% 200%, 300% 300%; } /* Faster movement for larger stars */
         }
 
         /* Modal styles */
         .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1000; /* Sit on top */
             left: 0;
             top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.7);
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0,0,0,0.7); /* Black w/ opacity */
             justify-content: center;
             align-items: center;
         }
 
         .modal-content {
-            background-color: #1a1a1a;
+            background-color: #1a1a1a; /* Darker background for modal */
             margin: auto;
             padding: 20px;
             border-radius: 10px;
-            box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.5); /* Red glow for modal */
             width: 80%;
             max-width: 500px;
             color: white;
@@ -128,7 +132,7 @@
 
         .close-button:hover,
         .close-button:focus {
-            color: #f00;
+            color: #f00; /* Red on hover */
             text-decoration: none;
             cursor: pointer;
         }
@@ -146,24 +150,19 @@
             transform: scale(0.98);
         }
 
-        /* Chat item styles */
-        .chat-item-hover {
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
+        /* Chat item hover effect */
         .chat-item-hover:hover {
-            background-color: #2a2a2a;
+            background-color: #2a2a2a; /* Slightly lighter dark gray on hover */
             transform: translateX(5px);
-            box-shadow: 0 0 10px rgba(255, 0, 0, 0.3);
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.3); /* Subtle red glow on hover */
         }
         .chat-item-active {
-            box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.5); /* Stronger glow for active chat */
         }
 
         /* Input focus glow */
         .input-glow:focus {
-            box-shadow: 0 0 0 3px rgba(255, 0, 0, 0.5);
+            box-shadow: 0 0 0 3px rgba(255, 0, 0, 0.5); /* Red glow around input on focus */
         }
 
         /* Message bubble shadow */
@@ -171,7 +170,7 @@
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
         }
         .message-bubble-user {
-            box-shadow: 0 2px 5px rgba(255, 0, 0, 0.3);
+            box-shadow: 0 2px 5px rgba(255, 0, 0, 0.3); /* Red glow for user messages */
         }
     </style>
 </head>
@@ -181,17 +180,13 @@
         <div class="stars"></div>
     </div>
 
-    <div id="app" class="flex flex-col h-screen relative z10">
+    <div id="app" class="flex flex-col h-screen relative z-10">
         <!-- Header -->
         <header class="bg-gray-900 text-white p-4 shadow-lg rounded-b-lg transition-all duration-300 ease-in-out">
             <h1 class="text-3xl font-bold text-center">RC-chat</h1>
             <p class="text-sm text-center mt-1 opacity-90">Your AI Chatbot for GitHub</p>
             <p id="user-id-display" class="text-xs text-center mt-2 opacity-80"></p>
             <p id="firebase-status" class="text-xs text-center mt-1 opacity-70">Connecting to Firebase...</p>
-            <div id="auth-loading-indicator" class="flex items-center justify-center text-gray-500 hidden">
-                <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-gray-500"></div>
-                <p class="ml-2">Authenticating...</p>
-            </div>
         </header>
 
         <!-- Main Content Area -->
@@ -203,7 +198,9 @@
                 </button>
                 <div class="flex-1 overflow-y-auto custom-scrollbar">
                     <h2 class="text-lg font-semibold mb-3 text-gray-300">Previous Chats</h2>
-                    <ul id="chat-list" class="space-y-2"></ul>
+                    <ul id="chat-list" class="space-y-2">
+                        <!-- Chat sessions will be loaded here -->
+                    </ul>
                 </div>
                 <button id="settings-button" class="bg-gray-700 hover:bg-gray-600 text-white font-semibold py-3 px-4 rounded-full mt-4 btn-glow-red" disabled>
                     <i class="fas fa-cog mr-2"></i> Settings
@@ -213,6 +210,7 @@
             <!-- Chat Area -->
             <main class="flex-1 flex flex-col bg-gray-800">
                 <div id="messages-container" class="flex-1 overflow-y-auto p-4 space-y-4 custom-scrollbar">
+                    <!-- Chat messages will be loaded here -->
                     <div id="loading-chat-indicator" class="flex items-center justify-center h-full text-gray-500 hidden">
                         <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-500"></div>
                         <p class="ml-3">Loading chat...</p>
@@ -230,12 +228,12 @@
                             id="message-input"
                             class="flex-1 p-3 border border-gray-600 bg-gray-700 text-white rounded-full focus:outline-none focus:ring-0 input-glow transition-all duration-200"
                             placeholder="Type your message..."
-                            aria-label="Type your message"
                             disabled
                         />
                         <button
                             id="send-button"
-                            class="px-6 py-3 rounded-full font-semibold text-white btn-glow-red bg-red-600 hover:bg-red-700 active:scale-95"
+                            class="px-6 py-3 rounded-full font-semibold text-white btn-glow-red
+                                bg-red-600 hover:bg-red-700 active:scale-95"
                             disabled
                         >
                             Send
@@ -249,7 +247,7 @@
     <!-- Settings Modal -->
     <div id="settings-modal" class="modal">
         <div class="modal-content">
-            <span class="close-button">×</span>
+            <span class="close-button">&times;</span>
             <h2 class="text-2xl font-bold mb-4">Settings</h2>
             <div class="mb-4">
                 <label for="ai-api-select" class="block text-gray-300 text-sm font-bold mb-2">
@@ -277,9 +275,9 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp, doc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp, doc, getDoc, setDoc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // Firebase Configuration
+        // IMPORTANT: YOUR ACTUAL FIREBASE PROJECT CONFIGURATION IS NOW HERE!
         const firebaseConfig = {
             apiKey: "AIzaSyAqu1Qi5RxbO6Y7crEup_RZlQzVj9ACofo",
             authDomain: "rcch-69836.firebaseapp.com",
@@ -290,38 +288,25 @@
             measurementId: "G-21YV7T999N"
         };
 
+
+        // This is a unique identifier for your application within Firestore.
+        // You can keep 'rc-chat-prod' or change it to any string you like.
         const appId = 'rc-chat-prod';
+
+        // The initialAuthToken is provided by the Canvas environment for testing.
+        // On external hosting, it will be null, and anonymous sign-in will be used.
         const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
 
-        // Initialize Firebase
-        let db, auth;
-        const firebaseStatusDisplay = document.getElementById('firebase-status');
-        const userIdDisplay = document.getElementById('user-id-display');
-        const authLoadingIndicator = document.getElementById('auth-loading-indicator');
-
-        try {
-            const app = initializeApp(firebaseConfig);
-            db = getFirestore(app);
-            auth = getAuth(app);
-            firebaseStatusDisplay.textContent = "Firebase Connected. Authenticating...";
-            authLoadingIndicator.classList.remove('hidden');
-        } catch (error) {
-            console.error("Error initializing Firebase:", error);
-            firebaseStatusDisplay.textContent = `Firebase Init Failed: ${error.message}`;
-            userIdDisplay.textContent = "Firebase initialization failed.";
-            authLoadingIndicator.classList.add('hidden');
-            // Removed illegal return statement
-            disableUI();
-        }
-
+        let db;
+        let auth;
         let currentUserId = null;
         let currentChatSessionId = null;
-        let selectedAiModel = 'gemini';
+        let selectedAiModel = 'gemini'; // Default AI model
 
-        // DOM Elements
         const messagesContainer = document.getElementById('messages-container');
         const messageInput = document.getElementById('message-input');
         const sendButton = document.getElementById('send-button');
+        const userIdDisplay = document.getElementById('user-id-display');
         const newChatButton = document.getElementById('new-chat-button');
         const chatList = document.getElementById('chat-list');
         const settingsButton = document.getElementById('settings-button');
@@ -331,45 +316,40 @@
         const saveSettingsButton = document.getElementById('save-settings-button');
         const loadingChatIndicator = document.getElementById('loading-chat-indicator');
         const noChatSelectedMessage = document.getElementById('no-chat-selected-message');
+        const firebaseStatusDisplay = document.getElementById('firebase-status'); // New status display
 
-        // Utility Functions
-        const disableUI = () => {
-            newChatButton.disabled = true;
-            settingsButton.disabled = true;
-            messageInput.disabled = true;
-            sendButton.disabled = true;
-            const retryButton = document.createElement('button');
-            retryButton.textContent = "Retry Connection";
-            retryButton.className = "bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-full mt-2 btn-glow-red";
-            retryButton.addEventListener('click', () => {
-                location.reload(); // Simple retry by reloading
-            });
-            userIdDisplay.appendChild(retryButton);
-        };
-
+        // Function to scroll to the bottom of the messages container
         const scrollToBottom = () => {
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
         };
 
+        // Function to display a message in the chat UI
         const displayMessage = (msg) => {
             const messageElement = document.createElement('div');
             messageElement.className = `flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`;
+
             const messageBubble = document.createElement('div');
             messageBubble.className = `max-w-[70%] p-3 rounded-xl shadow-md message-bubble-shadow ${
-                msg.sender === 'user' ? 'bg-red-600 text-white rounded-br-none message-bubble-user' : 'bg-gray-700 text-white rounded-bl-none'
+                msg.sender === 'user'
+                    ? 'bg-red-600 text-white rounded-br-none message-bubble-user' /* Added message-bubble-user for user glow */
+                    : 'bg-gray-700 text-white rounded-bl-none'
             }`;
+
             const messageText = document.createElement('p');
             messageText.className = 'text-sm break-words';
             messageText.textContent = msg.message;
+
             const timestampText = document.createElement('p');
             timestampText.className = 'text-xs mt-1 opacity-75 text-right';
             timestampText.textContent = msg.timestamp?.toDate ? msg.timestamp.toDate().toLocaleTimeString() : 'Sending...';
+
             messageBubble.appendChild(messageText);
             messageBubble.appendChild(timestampText);
             messageElement.appendChild(messageBubble);
             messagesContainer.appendChild(messageElement);
         };
 
+        // Function to analyze input at a character level (simulated learning)
         const analyzeCharacterInput = (text) => {
             const charCounts = {};
             for (const char of text) {
@@ -379,12 +359,11 @@
             return charCounts;
         };
 
-        // Send Message
+        // Function to send a message
         const sendMessage = async () => {
             const messageText = messageInput.value.trim();
             if (!messageText || !db || !currentUserId || !currentChatSessionId) {
                 console.warn("Cannot send message: Input is empty, DB not ready, or User ID/Chat Session is missing.");
-                firebaseStatusDisplay.textContent = "Error: Cannot send message. Check console.";
                 return;
             }
 
@@ -392,7 +371,23 @@
             messageInput.disabled = true;
             sendButton.disabled = true;
 
+            // Display a temporary loading indicator for AI response
+            const aiLoadingIndicator = document.createElement('div');
+            aiLoadingIndicator.id = 'ai-loading-indicator';
+            aiLoadingIndicator.className = 'flex justify-start';
+            aiLoadingIndicator.innerHTML = `
+                <div class="max-w-[70%] p-3 rounded-xl shadow-md bg-gray-700 text-white rounded-bl-none message-bubble-shadow">
+                    <div class="flex items-center">
+                        <div class="animate-spin rounded-full h-4 w-4 border-b-2 border-gray-500 mr-2"></div>
+                        <p class="text-sm">RC-chat is thinking...</p>
+                    </div>
+                </div>
+            `;
+            messagesContainer.appendChild(aiLoadingIndicator);
+            scrollToBottom();
+
             try {
+                // 1. Store user message in the current chat session's subcollection
                 await addDoc(collection(db, `artifacts/${appId}/public/data/chatSessions/${currentChatSessionId}/messages`), {
                     userId: currentUserId,
                     sender: 'user',
@@ -401,23 +396,10 @@
                     charAnalysis: analyzeCharacterInput(messageText)
                 });
 
-                const aiLoadingIndicator = document.createElement('div');
-                aiLoadingIndicator.id = 'ai-loading-indicator';
-                aiLoadingIndicator.className = 'flex justify-start';
-                aiLoadingIndicator.innerHTML = `
-                    <div class="max-w-[70%] p-3 rounded-xl shadow-md bg-gray-700 text-white rounded-bl-none message-bubble-shadow">
-                        <div class="flex items-center">
-                            <div class="animate-spin rounded-full h-4 w-4 border-b-2 border-gray-500 mr-2"></div>
-                            <p class="text-sm">RC-chat is thinking...</p>
-                        </div>
-                    </div>
-                `;
-                messagesContainer.appendChild(aiLoadingIndicator);
-                scrollToBottom();
-
+                // 2. Call Gemini API for AI response
                 const chatHistory = [{ role: "user", parts: [{ text: messageText }] }];
                 const payload = { contents: chatHistory };
-                const apiKey = ""; // Replace with your Gemini API key or inject via environment
+                const apiKey = ""; // Canvas will provide this at runtime
                 const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
 
                 const response = await fetch(apiUrl, {
@@ -438,6 +420,7 @@
                     aiResponseText = "I'm sorry, I couldn't generate a response at this time. Please try again.";
                 }
 
+                // Add a prefix if a simulated AI model is selected
                 if (selectedAiModel !== 'gemini') {
                     aiResponseText = `${selectedAiModel.toUpperCase()} (Simulated): ${aiResponseText}`;
                     if (selectedAiModel === 'r4c-custom') {
@@ -445,6 +428,7 @@
                     }
                 }
 
+                // 3. Store AI response in the current chat session's subcollection
                 await addDoc(collection(db, `artifacts/${appId}/public/data/chatSessions/${currentChatSessionId}/messages`), {
                     userId: currentUserId,
                     sender: 'ai',
@@ -455,14 +439,19 @@
 
             } catch (error) {
                 console.error("Error sending message or getting AI response:", error);
-                await addDoc(collection(db, `artifacts/${appId}/public/data/chatSessions/${currentChatSessionId}/messages`), {
-                    userId: currentUserId,
-                    sender: 'ai',
-                    message: "An error occurred while trying to get a response. Please check your connection.",
-                    timestamp: serverTimestamp()
-                });
-                firebaseStatusDisplay.textContent = `Error: ${error.message}`;
+                // Display a user-friendly error message in the chat
+                const errorMessage = document.createElement('div');
+                errorMessage.className = 'flex justify-start';
+                errorMessage.innerHTML = `
+                    <div class="max-w-[70%] p-3 rounded-xl shadow-md bg-red-800 text-white rounded-bl-none message-bubble-shadow">
+                        <p class="text-sm">Error: Failed to send message or get AI response. Please check your internet connection and Firebase permissions. Details in console.</p>
+                    </div>
+                `;
+                messagesContainer.appendChild(errorMessage);
+                scrollToBottom();
+
             } finally {
+                // Always remove AI loading indicator and re-enable input/button
                 const existingAiLoadingIndicator = document.getElementById('ai-loading-indicator');
                 if (existingAiLoadingIndicator) {
                     existingAiLoadingIndicator.remove();
@@ -474,34 +463,34 @@
             }
         };
 
-        // Load Chat Session
+        // Function to load messages for a specific chat session
         const loadChatSession = async (sessionId) => {
-            if (!db || !currentUserId) {
-                console.warn("Cannot load chat: DB or User ID missing.");
-                firebaseStatusDisplay.textContent = "Error: Database or user not ready.";
-                return;
-            }
+            if (!db || !currentUserId) return;
 
             currentChatSessionId = sessionId;
-            messagesContainer.innerHTML = '';
+            messagesContainer.innerHTML = ''; // Clear previous messages
             loadingChatIndicator.classList.remove('hidden');
             noChatSelectedMessage.classList.add('hidden');
-            messageInput.disabled = false;
-            sendButton.disabled = false;
+            messageInput.disabled = false; // Enable input and send button
+            sendButton.disabled = false; // Enable input and send button
 
+            // Remove active class from all chat items
             document.querySelectorAll('#chat-list li').forEach(item => {
                 item.classList.remove('bg-red-700', 'chat-item-active');
             });
+            // Add active class to the selected chat item
             const selectedChatItem = document.getElementById(`chat-item-${sessionId}`);
             if (selectedChatItem) {
                 selectedChatItem.classList.add('bg-red-700', 'chat-item-active');
             }
 
+
+            // Listen for messages in the selected session
             const messagesCollectionRef = collection(db, `artifacts/${appId}/public/data/chatSessions/${sessionId}/messages`);
             const q = query(messagesCollectionRef, orderBy('timestamp', 'asc'));
 
             onSnapshot(q, (snapshot) => {
-                messagesContainer.innerHTML = '';
+                messagesContainer.innerHTML = ''; // Clear existing messages before re-rendering
                 if (snapshot.empty) {
                     messagesContainer.innerHTML = '<p class="text-gray-500 text-center">No messages in this chat yet. Start typing!</p>';
                 } else {
@@ -515,144 +504,139 @@
                 console.error("Error fetching messages for session:", sessionId, error);
                 loadingChatIndicator.classList.add('hidden');
                 messagesContainer.innerHTML = '<p class="text-red-400 text-center">Error loading messages.</p>';
-                firebaseStatusDisplay.textContent = `Error loading messages: ${error.message}`;
             });
         };
 
-        // Start New Chat
+        // Function to create a new chat session
         const startNewChat = async () => {
             if (!db || !currentUserId) {
-                console.warn("Cannot start new chat: DB or User ID missing.");
-                firebaseStatusDisplay.textContent = "Error: Database or user not ready.";
+                console.warn("Cannot start new chat: DB not ready or User ID is missing.");
                 return;
             }
 
             try {
                 const newChatRef = await addDoc(collection(db, `artifacts/${appId}/public/data/chatSessions`), {
                     userId: currentUserId,
-                    name: `Chat ${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}`,
+                    name: `Chat ${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}`, // Default name
                     createdAt: serverTimestamp(),
                     lastUpdated: serverTimestamp()
                 });
                 console.log("New chat session created with ID:", newChatRef.id);
-                await loadChatSession(newChatRef.id);
+                loadChatSession(newChatRef.id); // Load the new chat
             } catch (error) {
                 console.error("Error creating new chat session:", error);
-                firebaseStatusDisplay.textContent = `Error creating chat: ${error.message}`;
             }
         };
 
-        // Render Chat Sessions
+        // Function to render chat sessions in the side panel
         const renderChatSessions = (sessions) => {
             chatList.innerHTML = '';
             if (sessions.length === 0) {
                 chatList.innerHTML = '<li class="text-gray-400 text-sm">No chats yet. Click "New Chat" to begin!</li>';
-                return;
             }
             sessions.forEach(session => {
                 const listItem = document.createElement('li');
                 listItem.id = `chat-item-${session.id}`;
-                listItem.className = `p-3 rounded-lg cursor-pointer transition duration-200 text-gray-200 chat-item-hover ${
-                    session.id === currentChatSessionId ? 'bg-red-700 chat-item-active' : 'bg-gray-800'
-                }`;
-                listItem.setAttribute('role', 'button');
-                listItem.setAttribute('aria-label', `Select chat: ${session.name}`);
-                listItem.innerHTML = `
-                    <div class="flex justify-between items-center">
-                        <span>${session.name.length > 30 ? session.name.substring(0, 27) + '...' : session.name}</span>
-                        <button class="delete-chat-button text-red-400 hover:text-red-600" aria-label="Delete chat: ${session.name}">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </div>
-                `;
-                listItem.querySelector('.delete-chat-button').addEventListener('click', async (e) => {
-                    e.stopPropagation();
-                    if (confirm(`Delete chat "${session.name}"?`)) {
-                        try {
-                            await deleteDoc(doc(db, `artifacts/${appId}/public/data/chatSessions`, session.id));
-                            if (currentChatSessionId === session.id) {
-                                currentChatSessionId = null;
-                                messagesContainer.innerHTML = '';
-                                noChatSelectedMessage.classList.remove('hidden');
-                            }
-                            firebaseStatusDisplay.textContent = `Chat "${session.name}" deleted.`;
-                        } catch (error) {
-                            console.error("Error deleting chat session:", error);
-                            firebaseStatusDisplay.textContent = `Error deleting chat: ${error.message}`;
-                        }
-                    }
-                });
+                listItem.className = `p-3 rounded-lg cursor-pointer transition duration-200 text-gray-200 chat-item-hover ${session.id === currentChatSessionId ? 'bg-red-700 chat-item-active' : 'bg-gray-800'}`;
+                listItem.textContent = session.name;
                 listItem.addEventListener('click', () => loadChatSession(session.id));
                 chatList.appendChild(listItem);
             });
         };
 
-        // Authentication with Timeout
-        const authenticateWithTimeout = async () => {
-            const timeoutPromise = new Promise((_, reject) => {
-                setTimeout(() => reject(new Error("Authentication timed out after 10 seconds.")), 10000);
-            });
-
+        // Initialize Firebase and set up authentication listener
+        window.onload = function () {
             try {
-                const authPromise = new Promise((resolve, reject) => {
-                    onAuthStateChanged(auth, (user) => {
-                        console.log("onAuthStateChanged triggered. User:", user);
-                        if (user) {
-                            resolve(user);
-                        } else if (initialAuthToken) {
-                            console.log("Using provided initialAuthToken for sign-in.");
-                            signInWithCustomToken(auth, initialAuthToken)
-                                .then(() => console.log("Successfully signed in with custom token."))
-                                .catch(reject);
-                        } else {
-                            console.log("No initialAuthToken. Attempting anonymous sign-in.");
-                            signInAnonymously(auth)
-                                .then(() => console.log("Successfully signed in anonymously."))
-                                .catch(reject);
+                // Check if firebaseConfig.projectId is still the placeholder value
+                if (!firebaseConfig.projectId || firebaseConfig.projectId === "YOUR_PROJECT_ID") {
+                    firebaseStatusDisplay.textContent = "Firebase Config Missing! Please update the code.";
+                    console.error("Firebase Initialization Error: 'projectId' not provided in firebaseConfig. Please update the firebaseConfig object in the script with your actual Firebase project details. You can find this in your Firebase project settings -> 'Your apps' section (click the web icon if you don't have a web app yet).");
+                    // Disable all interactive elements if Firebase config is missing
+                    newChatButton.disabled = true;
+                    settingsButton.disabled = true;
+                    messageInput.disabled = true;
+                    sendButton.disabled = true;
+                    return; // Stop further Firebase initialization
+                }
+
+                const app = initializeApp(firebaseConfig);
+                db = getFirestore(app);
+                auth = getAuth(app);
+                firebaseStatusDisplay.textContent = "Firebase Connected. Authenticating...";
+
+                onAuthStateChanged(auth, async (user) => {
+                    console.log("onAuthStateChanged triggered. User:", user); // Diagnostic log
+                    if (user) {
+                        currentUserId = user.uid;
+                        userIdDisplay.textContent = `Your User ID: ${currentUserId}`;
+                        newChatButton.disabled = false; // Enable New Chat button
+                        settingsButton.disabled = false; // Enable Settings button
+                        firebaseStatusDisplay.textContent = "Authenticated.";
+
+                        // Listen for chat sessions for the current user
+                        const chatSessionsCollectionRef = collection(db, `artifacts/${appId}/public/data/chatSessions`);
+                        const q = query(chatSessionsCollectionRef, orderBy('lastUpdated', 'desc'));
+
+                        onSnapshot(q, async (snapshot) => { // Made async to await startNewChat
+                            const fetchedSessions = snapshot.docs.map(doc => ({
+                                id: doc.id,
+                                ...doc.data()
+                            }));
+                            renderChatSessions(fetchedSessions);
+
+                            // If no chat session is selected, and there are existing sessions, load the most recent one
+                            if (!currentChatSessionId && fetchedSessions.length > 0) {
+                                loadChatSession(fetchedSessions[0].id);
+                            } else if (!currentChatSessionId && fetchedSessions.length === 0) {
+                                // If no sessions exist, automatically start a new chat
+                                console.log("No existing chat sessions found. Starting a new chat automatically.");
+                                await startNewChat(); // Automatically start a new chat
+                            }
+                        }, (error) => {
+                            console.error("Error fetching chat sessions:", error);
+                            firebaseStatusDisplay.textContent = "Error fetching chats. Check console and Firebase rules.";
+                        });
+
+                    } else {
+                        try {
+                            if (initialAuthToken) {
+                                try {
+                                    await signInWithCustomToken(auth, initialAuthToken);
+                                    console.log("Attempted sign-in with custom token."); // Diagnostic log
+                                } catch (customTokenError) {
+                                    if (customTokenError.code === 'auth/custom-token-mismatch' || customTokenError.code === 'auth/invalid-custom-token') {
+                                        console.warn("Custom token mismatch/invalid. Falling back to anonymous sign-in.");
+                                        // Fallback to anonymous sign-in
+                                        // IMPORTANT: Ensure Anonymous authentication is enabled in your Firebase project settings!
+                                        // Go to Firebase Console -> Authentication -> Sign-in method -> Anonymous -> Enable.
+                                        await signInAnonymously(auth);
+                                    } else {
+                                        throw customTokenError; // Re-throw other errors
+                                    }
+                                }
+                            } else {
+                                // Ensure anonymous sign-in is enabled in Firebase Console for this to work
+                                // Go to Firebase Console -> Authentication -> Sign-in method -> Anonymous -> Enable.
+                                await signInAnonymously(auth);
+                                console.log("Attempted anonymous sign-in."); // Diagnostic log
+                            }
+                        } catch (signInError) {
+                            console.error("Error during authentication attempt:", signInError);
+                            userIdDisplay.textContent = "Authentication failed. Please check console.";
+                            firebaseStatusDisplay.textContent = "Authentication Failed.";
+                            newChatButton.disabled = true; // Keep disabled on auth failure
+                            settingsButton.disabled = true; // Keep disabled on auth failure
+                            messageInput.disabled = true;
+                            sendButton.disabled = true;
                         }
-                    }, reject);
-                });
-
-                const user = await Promise.race([authPromise, timeoutPromise]);
-                currentUserId = user.uid;
-                userIdDisplay.textContent = `Your User ID: ${currentUserId}`;
-                firebaseStatusDisplay.textContent = "Authenticated.";
-                authLoadingIndicator.classList.add('hidden');
-                newChatButton.disabled = false;
-                settingsButton.disabled = false;
-
-                // Load chat sessions
-                const chatSessionsCollectionRef = collection(db, `artifacts/${appId}/public/data/chatSessions`);
-                const q = query(chatSessionsCollectionRef, orderBy('lastUpdated', 'desc'));
-
-                onSnapshot(q, async (snapshot) => {
-                    const fetchedSessions = snapshot.docs.map(doc => ({
-                        id: doc.id,
-                        ...doc.data()
-                    }));
-                    renderChatSessions(fetchedSessions);
-
-                    if (!currentChatSessionId && fetchedSessions.length > 0) {
-                        await loadChatSession(fetchedSessions[0].id);
-                    } else if (!currentChatSessionId && fetchedSessions.length === 0) {
-                        console.log("No existing chat sessions found. Starting a new chat.");
-                        await startNewChat();
                     }
-                }, (error) => {
-                    console.error("Error fetching chat sessions:", error);
-                    firebaseStatusDisplay.textContent = `Error fetching chats: ${error.message}`;
                 });
             } catch (error) {
-                console.error("Authentication error:", error);
-                firebaseStatusDisplay.textContent = `Authentication Failed: ${error.message}`;
-                userIdDisplay.textContent = "Authentication failed. Please try again.";
-                authLoadingIndicator.classList.add('hidden');
-                disableUI();
+                console.error("Error initializing Firebase:", error);
+                firebaseStatusDisplay.textContent = "Firebase Init Failed. Check console.";
+                userIdDisplay.textContent = "Firebase initialization failed.";
             }
         };
-
-        // Initialize Authentication
-        authenticateWithTimeout();
 
         // Event Listeners
         sendButton.addEventListener('click', sendMessage);
@@ -662,23 +646,29 @@
             }
         });
         newChatButton.addEventListener('click', startNewChat);
+
+        // Settings Modal Logic
         settingsButton.addEventListener('click', () => {
-            aiApiSelect.value = selectedAiModel;
+            aiApiSelect.value = selectedAiModel; // Set current selection
             settingsModal.style.display = 'flex';
         });
+
         closeModalButton.addEventListener('click', () => {
             settingsModal.style.display = 'none';
         });
+
         window.addEventListener('click', (event) => {
             if (event.target === settingsModal) {
                 settingsModal.style.display = 'none';
             }
         });
+
         saveSettingsButton.addEventListener('click', () => {
             selectedAiModel = aiApiSelect.value;
             console.log("AI Model set to:", selectedAiModel);
             settingsModal.style.display = 'none';
         });
+
     </script>
 </body>
 </html>
