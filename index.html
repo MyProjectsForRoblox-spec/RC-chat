@@ -7,7 +7,7 @@
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Inter Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
@@ -16,15 +16,15 @@
             width: 8px;
         }
         .custom-scrollbar::-webkit-scrollbar-track {
-            background: #1a1a1a; /* Dark track for dark theme */
+            background: #0a0a0a; /* Very dark track for sleek look */
             border-radius: 10px;
         }
         .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #444; /* Darker thumb */
+            background: #333; /* Darker thumb */
             border-radius: 10px;
         }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: #666;
+            background: #555;
         }
 
         /* Starry Background */
@@ -32,6 +32,7 @@
             font-family: 'Inter', sans-serif;
             background: #000; /* Solid black background */
             overflow: hidden; /* Hide scrollbars for stars */
+            color: #e0e0e0; /* Lighter text for contrast on dark background */
         }
 
         .star-bg {
@@ -42,8 +43,8 @@
             height: 100%;
             pointer-events: none;
             z-index: -1;
-            /* Radial gradient for subtle depth */
-            background: radial-gradient(200% 100% at 50% 0%, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.9) 100%);
+            /* Radial gradient for subtle depth, more black */
+            background: radial-gradient(200% 100% at 50% 0%, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.98) 100%);
         }
 
         .stars {
@@ -52,7 +53,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            /* More star layers for a denser effect */
+            /* More star layers for a denser effect, subtle colors */
             background-image:
                 radial-gradient(1px 1px at 50px 100px, #fff, rgba(0,0,0,0)),
                 radial-gradient(1px 1px at 150px 200px, #fff, rgba(0,0,0,0)),
@@ -105,72 +106,143 @@
             width: 100%; /* Full width */
             height: 100%; /* Full height */
             overflow: auto; /* Enable scroll if needed */
-            background-color: rgba(0,0,0,0.7); /* Black w/ opacity */
+            background-color: rgba(0,0,0,0.85); /* Darker overlay */
             justify-content: center;
             align-items: center;
         }
 
         .modal-content {
-            background-color: #1a1a1a; /* Darker background for modal */
+            background-color: #111; /* Even darker background for modal */
             margin: auto;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(255, 0, 0, 0.5); /* Red glow for modal */
-            width: 80%;
-            max-width: 500px;
-            color: white;
+            padding: 28px; /* More padding */
+            border-radius: 16px; /* More rounded */
+            box-shadow: 0 0 30px rgba(255, 0, 0, 0.7); /* Stronger red glow for modal */
+            width: 90%; /* Slightly wider */
+            max-width: 600px; /* Increased max-width */
+            color: #e0e0e0;
             transition: all 0.3s ease-in-out;
+            border: 1px solid rgba(255, 0, 0, 0.4); /* Subtle red border */
         }
 
         .close-button {
             color: #aaa;
             float: right;
-            font-size: 28px;
+            font-size: 36px; /* Larger */
             font-weight: bold;
             transition: color 0.3s ease;
         }
 
         .close-button:hover,
         .close-button:focus {
-            color: #f00; /* Red on hover */
+            color: #ff4444; /* Brighter red on hover */
             text-decoration: none;
             cursor: pointer;
         }
 
         /* Custom button styles for glow and hover */
         .btn-glow-red {
+            background-image: linear-gradient(to right, #ef4444, #dc2626); /* Gradient for buttons */
             transition: all 0.3s ease-in-out;
-            box-shadow: 0 0 5px rgba(255, 0, 0, 0.3);
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.5); /* More diffused initial glow */
+            border: 1px solid rgba(255, 0, 0, 0.6); /* Subtle border */
         }
         .btn-glow-red:hover {
-            box-shadow: 0 0 15px rgba(255, 0, 0, 0.7), 0 0 25px rgba(255, 0, 0, 0.5);
-            transform: scale(1.02);
+            background-image: linear-gradient(to right, #dc2626, #b91c1c); /* Darker gradient on hover */
+            box-shadow: 0 0 25px rgba(255, 0, 0, 0.9), 0 0 40px rgba(255, 0, 0, 0.7); /* Stronger, wider glow */
+            transform: translateY(-2px) scale(1.03); /* Slightly more pronounced lift and scale */
         }
         .btn-glow-red:active {
-            transform: scale(0.98);
+            transform: translateY(0) scale(0.97);
+            box-shadow: 0 0 12px rgba(255, 0, 0, 0.6); /* Reduced glow on active */
         }
+
+        /* Secondary button style */
+        .btn-secondary-glow {
+            background-color: #333; /* Darker grey background */
+            border: 1px solid #555;
+            transition: all 0.3s ease-in-out;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+        }
+        .btn-secondary-glow:hover {
+            background-color: #444;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.4), 0 0 25px rgba(255, 0, 0, 0.3);
+            transform: translateY(-2px) scale(1.02);
+        }
+        .btn-secondary-glow:active {
+            transform: translateY(0) scale(0.98);
+            box-shadow: 0 0 8px rgba(255, 0, 0, 0.3);
+        }
+
 
         /* Chat item hover effect */
         .chat-item-hover:hover {
-            background-color: #2a2a2a; /* Slightly lighter dark gray on hover */
-            transform: translateX(5px);
-            box-shadow: 0 0 10px rgba(255, 0, 0, 0.3); /* Subtle red glow on hover */
+            background-color: #1a1a1a; /* Darker grey on hover */
+            transform: translateX(8px); /* More pronounced slide */
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.5); /* Subtle red glow on hover */
+            border-left: 4px solid #ff4444; /* Red highlight on hover */
         }
         .chat-item-active {
-            box-shadow: 0 0 10px rgba(255, 0, 0, 0.5); /* Stronger glow for active chat */
+            background-color: #1a1a1a; /* Keep active item darker */
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.7); /* Stronger glow for active chat */
+            border-left: 4px solid #ff0000; /* Solid red border for active */
         }
 
         /* Input focus glow */
         .input-glow:focus {
-            box-shadow: 0 0 0 3px rgba(255, 0, 0, 0.5); /* Red glow around input on focus */
+            box-shadow: 0 0 0 5px rgba(255, 0, 0, 0.7); /* More prominent red glow */
+            border-color: #ff0000; /* Red border on focus */
         }
 
         /* Message bubble shadow */
         .message-bubble-shadow {
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* Deeper shadow */
         }
         .message-bubble-user {
-            box-shadow: 0 2px 5px rgba(255, 0, 0, 0.3); /* Red glow for user messages */
+            background-color: #b91c1c; /* Slightly darker red for user messages */
+            box-shadow: 0 4px 10px rgba(255, 0, 0, 0.5); /* Red glow for user messages */
+        }
+        .message-bubble-ai {
+            background-color: #222; /* Darker grey for AI messages */
+            border: 1px solid #333; /* Subtle border for AI messages */
+        }
+
+        /* Loading dots animation */
+        @keyframes blink {
+            0%, 100% { opacity: 0.2; }
+            33% { opacity: 1; }
+            66% { opacity: 0.2; }
+        }
+        .loading-dot {
+            animation: blink 1.4s infinite;
+        }
+        .loading-dot:nth-child(2) { animation-delay: 0.2s; }
+        .loading-dot:nth-child(3) { animation-delay: 0.4s; }
+
+        /* More options container animation */
+        .fade-in-out {
+            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        .fade-in-out.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Canvas Modal Specific Styles */
+        #canvas-modal .modal-content {
+            max-width: 900px; /* Wider for canvas */
+            width: 95%;
+            height: 90%;
+            display: flex;
+            flex-direction: column;
+        }
+        #drawingCanvas {
+            border: 1px solid #555;
+            background-color: #1a1a1a;
+            cursor: crosshair;
+            flex-grow: 1; /* Allows canvas to fill available space */
+            border-radius: 8px;
         }
     </style>
 </head>
@@ -182,61 +254,95 @@
 
     <div id="app" class="flex flex-col h-screen relative z-10">
         <!-- Header -->
-        <header class="bg-gray-900 text-white p-4 shadow-lg rounded-b-lg transition-all duration-300 ease-in-out">
-            <h1 class="text-3xl font-bold text-center">RC-chat</h1>
-            <p class="text-sm text-center mt-1 opacity-90">Your AI Chatbot for GitHub</p>
-            <p id="user-id-display" class="text-xs text-center mt-2 opacity-80"></p>
-            <p id="firebase-status" class="text-xs text-center mt-1 opacity-70">Connecting to Firebase...</p>
+        <header class="bg-black text-white p-5 shadow-xl rounded-b-xl transition-all duration-300 ease-in-out border-b border-gray-800 flex items-center justify-between">
+            <div class="flex items-center space-x-4">
+                <img src="https://i.ibb.co/W400Sg8Q/RC.png" alt="RC-chat Logo" class="h-10 w-auto rounded-full shadow-lg border border-red-700">
+                <h1 class="text-4xl font-extrabold text-red-500 tracking-wider">RC-chat</h1>
+            </div>
+            <button id="summarize-chat-button" class="bg-gray-800 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-full btn-secondary-glow text-base" disabled>
+                <i class="fas fa-file-alt mr-2"></i> Summarize Chat
+            </button>
         </header>
 
         <!-- Main Content Area -->
         <div class="flex flex-1 overflow-hidden">
             <!-- Side Panel -->
-            <aside id="side-panel" class="w-64 bg-gray-900 p-4 border-r border-gray-700 flex flex-col shadow-lg transition-all duration-300 ease-in-out">
-                <button id="new-chat-button" class="bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-4 rounded-full mb-4 btn-glow-red" disabled>
+            <aside id="side-panel" class="w-72 bg-black p-6 border-r border-gray-800 flex flex-col shadow-2xl transition-all duration-300 ease-in-out">
+                <button id="new-chat-button" class="bg-red-700 hover:bg-red-800 text-white font-bold py-3.5 px-6 rounded-full mb-6 btn-glow-red text-lg" disabled>
                     <i class="fas fa-plus mr-2"></i> New Chat
                 </button>
-                <div class="flex-1 overflow-y-auto custom-scrollbar">
-                    <h2 class="text-lg font-semibold mb-3 text-gray-300">Previous Chats</h2>
-                    <ul id="chat-list" class="space-y-2">
+                <div class="flex-1 overflow-y-auto custom-scrollbar pr-2">
+                    <h2 class="text-xl font-semibold mb-4 text-gray-300">Previous Chats</h2>
+                    <ul id="chat-list" class="space-y-3">
                         <!-- Chat sessions will be loaded here -->
                     </ul>
                 </div>
-                <button id="settings-button" class="bg-gray-700 hover:bg-gray-600 text-white font-semibold py-3 px-4 rounded-full mt-4 btn-glow-red" disabled>
+                <button id="settings-button" class="bg-gray-800 hover:bg-gray-700 text-white font-bold py-3.5 px-6 rounded-full mt-6 btn-secondary-glow text-lg" disabled>
                     <i class="fas fa-cog mr-2"></i> Settings
                 </button>
             </aside>
 
             <!-- Chat Area -->
-            <main class="flex-1 flex flex-col bg-gray-800">
-                <div id="messages-container" class="flex-1 overflow-y-auto p-4 space-y-4 custom-scrollbar">
+            <main class="flex-1 flex flex-col bg-gray-950">
+                <div id="messages-container" class="flex-1 overflow-y-auto p-6 space-y-5 custom-scrollbar">
                     <!-- Chat messages will be loaded here -->
-                    <div id="loading-chat-indicator" class="flex items-center justify-center h-full text-gray-500 hidden">
-                        <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-500"></div>
-                        <p class="ml-3">Loading chat...</p>
+                    <div id="loading-chat-indicator" class="flex flex-col items-center justify-center h-full text-gray-600 hidden">
+                        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-600 mb-4"></div>
+                        <p class="ml-4 text-xl font-medium">Loading chat...</p>
                     </div>
-                    <div id="no-chat-selected-message" class="flex items-center justify-center h-full text-gray-500">
-                        <p>Select a chat or start a new one!</p>
+                    <div id="no-chat-selected-message" class="flex items-center justify-center h-full text-gray-600">
+                        <p class="text-xl text-center leading-relaxed">
+                            Welcome to RC-chat! <br>
+                            Select an existing chat or start a new one to begin your conversation.
+                        </p>
                     </div>
                 </div>
 
                 <!-- Message Input Area -->
-                <div class="p-4 bg-gray-900 border-t border-gray-700 shadow-lg rounded-t-lg transition-all duration-300 ease-in-out">
-                    <div class="flex space-x-3">
+                <div class="p-6 bg-black border-t border-gray-800 shadow-2xl rounded-t-xl transition-all duration-300 ease-in-out">
+                    <div class="flex items-center space-x-4">
+                        <!-- New plus button to reveal more options -->
+                        <button id="toggle-more-options-button" class="flex-shrink-0 px-5 py-3 rounded-full font-semibold text-white btn-secondary-glow text-lg" disabled>
+                            <i class="fas fa-plus"></i>
+                        </button>
                         <input
                             type="text"
                             id="message-input"
-                            class="flex-1 p-3 border border-gray-600 bg-gray-700 text-white rounded-full focus:outline-none focus:ring-0 input-glow transition-all duration-200"
+                            class="flex-1 p-4 border border-gray-700 bg-gray-800 text-white rounded-full focus:outline-none focus:ring-0 input-glow transition-all duration-200 text-base placeholder-gray-400"
                             placeholder="Type your message..."
                             disabled
                         />
                         <button
                             id="send-button"
-                            class="px-6 py-3 rounded-full font-semibold text-white btn-glow-red
-                                bg-red-600 hover:bg-red-700 active:scale-95"
+                            class="px-8 py-3 rounded-full font-bold text-white btn-glow-red
+                                bg-red-700 hover:bg-red-800 active:scale-95 text-lg"
                             disabled
                         >
-                            Send
+                            Send <i class="fas fa-paper-plane ml-2"></i>
+                        </button>
+                    </div>
+                    <!-- Container for more options, initially hidden -->
+                    <div id="more-options-container" class="flex flex-wrap justify-center gap-4 mt-4 fade-in-out hidden">
+                        <button id="deep-research-button" class="px-5 py-3 rounded-full font-semibold text-white btn-secondary-glow text-base" disabled>
+                            <i class="fas fa-magnifying-glass mr-2"></i> Deep Research
+                        </button>
+                        <button id="canvas-button" class="px-5 py-3 rounded-full font-semibold text-white btn-secondary-glow text-base" disabled>
+                            <i class="fas fa-shapes mr-2"></i> Canvas
+                        </button>
+                        <button id="attach-file-button" class="px-5 py-3 rounded-full font-semibold text-white btn-secondary-glow text-base" disabled>
+                            <i class="fas fa-paperclip mr-2"></i> Attach File
+                        </button>
+                        <button id="generate-questions-button" class="px-5 py-3 rounded-full font-semibold text-white btn-secondary-glow text-base" disabled>
+                            <i class="fas fa-question-circle mr-2"></i> Follow-up Questions
+                        </button>
+                        <button id="brainstorm-ideas-button" class="px-5 py-3 rounded-full font-semibold text-white btn-secondary-glow text-base" disabled>
+                            <i class="fas fa-lightbulb mr-2"></i> Brainstorm Ideas
+                        </button>
+                        <button id="translate-message-button" class="px-5 py-3 rounded-full font-semibold text-white btn-secondary-glow text-base" disabled>
+                            <i class="fas fa-language mr-2"></i> Translate
+                        </button>
+                        <button id="expand-message-button" class="px-5 py-3 rounded-full font-semibold text-white btn-secondary-glow text-base" disabled>
+                            <i class="fas fa-expand-alt mr-2"></i> Expand
                         </button>
                     </div>
                 </div>
@@ -248,12 +354,12 @@
     <div id="settings-modal" class="modal">
         <div class="modal-content">
             <span class="close-button">&times;</span>
-            <h2 class="text-2xl font-bold mb-4">Settings</h2>
-            <div class="mb-4">
-                <label for="ai-api-select" class="block text-gray-300 text-sm font-bold mb-2">
+            <h2 class="text-3xl font-bold mb-5 text-red-500">Settings</h2>
+            <div class="mb-6">
+                <label for="ai-api-select" class="block text-gray-300 text-base font-bold mb-3">
                     Select AI Model:
                 </label>
-                <select id="ai-api-select" class="shadow appearance-none border rounded w-full py-2 px-3 bg-gray-700 text-white leading-tight focus:outline-none focus:shadow-outline focus:border-red-600 transition-all duration-200">
+                <select id="ai-api-select" class="shadow-inner appearance-none border border-gray-600 rounded-lg w-full py-3 px-4 bg-gray-800 text-white leading-tight focus:outline-none focus:ring-2 focus:ring-red-600 transition-all duration-200">
                     <option value="gemini">Gemini (Current)</option>
                     <option value="chatgpt">ChatGPT (Simulated)</option>
                     <option value="deepseek">DeepSeek (Simulated)</option>
@@ -261,21 +367,35 @@
                     <option value="r4c-custom">R4C-Custom (Alpha - May have bugs)</option>
                     <option value="other-free">Other Free Models (Simulated)</option>
                 </select>
-                <p class="text-xs text-gray-400 mt-2">
+                <p class="text-xs text-gray-500 mt-3">
                     Note: Only Gemini is directly integrated. Other models are simulated and will use Gemini as a fallback.
                     R4C-Custom uses a free open-source AI API for its database. Free models often require API keys or have usage limits.
                 </p>
             </div>
-            <button id="save-settings-button" class="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-full btn-glow-red">
+            <button id="save-settings-button" class="bg-red-700 hover:bg-red-800 text-white font-bold py-3 px-6 rounded-full btn-glow-red text-lg">
                 Save Settings
             </button>
+        </div>
+    </div>
+
+    <!-- Canvas Modal -->
+    <div id="canvas-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" id="close-canvas-button">&times;</span>
+            <h2 class="text-3xl font-bold mb-5 text-red-500">Drawing Canvas</h2>
+            <canvas id="drawingCanvas"></canvas>
+            <div class="flex justify-center gap-4 mt-4">
+                <button id="clear-canvas-button" class="px-5 py-3 rounded-full font-semibold text-white btn-secondary-glow text-base">
+                    <i class="fas fa-eraser mr-2"></i> Clear Canvas
+                </button>
+            </div>
         </div>
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp, doc, getDoc, setDoc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp, doc, getDoc, setDoc, updateDoc, deleteDoc, getDocs, limit } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         // IMPORTANT: YOUR ACTUAL FIREBASE PROJECT CONFIGURATION IS NOW HERE!
         const firebaseConfig = {
@@ -288,13 +408,10 @@
             measurementId: "G-21YV7T999N"
         };
 
-
         // This is a unique identifier for your application within Firestore.
-        // You can keep 'rc-chat-prod' or change it to any string you like.
         const appId = 'rc-chat-prod';
 
         // The initialAuthToken is provided by the Canvas environment for testing.
-        // On external hosting, it will be null, and anonymous sign-in will be used.
         const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
 
         let db;
@@ -303,44 +420,75 @@
         let currentChatSessionId = null;
         let selectedAiModel = 'gemini'; // Default AI model
 
-        const messagesContainer = document.getElementById('messages-container');
-        const messageInput = document.getElementById('message-input');
-        const sendButton = document.getElementById('send-button');
-        const userIdDisplay = document.getElementById('user-id-display');
-        const newChatButton = document.getElementById('new-chat-button');
-        const chatList = document.getElementById('chat-list');
-        const settingsButton = document.getElementById('settings-button');
-        const settingsModal = document.getElementById('settings-modal');
-        const closeModalButton = settingsModal.querySelector('.close-button');
-        const aiApiSelect = document.getElementById('ai-api-select');
-        const saveSettingsButton = document.getElementById('save-settings-button');
-        const loadingChatIndicator = document.getElementById('loading-chat-indicator');
-        const noChatSelectedMessage = document.getElementById('no-chat-selected-message');
-        const firebaseStatusDisplay = document.getElementById('firebase-status'); // New status display
+        // Declare DOM elements at a higher scope or ensure they are accessed after the DOM is ready
+        let messagesContainer;
+        let messageInput;
+        let sendButton;
+        let userIdDisplay;
+        let newChatButton;
+        let chatList;
+        let settingsButton;
+        let settingsModal;
+        let closeModalButton;
+        let aiApiSelect;
+        let saveSettingsButton;
+        let loadingChatIndicator;
+        let noChatSelectedMessage;
+        let firebaseStatusDisplay;
+        let summarizeChatButton;
+        let rephraseButton;
+        // New buttons
+        let deepResearchButton;
+        let canvasButton;
+        let attachFileButton;
+        let generateQuestionsButton; // New button for follow-up questions
+        let brainstormIdeasButton;   // New button for brainstorming ideas
+        let translateMessageButton;  // New button for translate message
+        let expandMessageButton;     // New button for expand message
+        let toggleMoreOptionsButton; // New button to toggle more options
+        let moreOptionsContainer;    // New container for more options
+
+        // Canvas elements
+        let canvasModal;
+        let closeCanvasButton;
+        let drawingCanvas;
+        let ctx;
+        let isDrawing = false;
+        let lastX = 0;
+        let lastY = 0;
+        let clearCanvasButton;
+
+        // Hidden file input
+        let fileInput;
+
 
         // Function to scroll to the bottom of the messages container
         const scrollToBottom = () => {
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            if (messagesContainer) {
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }
         };
 
         // Function to display a message in the chat UI
         const displayMessage = (msg) => {
+            if (!messagesContainer) return; // Ensure container exists
+
             const messageElement = document.createElement('div');
             messageElement.className = `flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`;
 
             const messageBubble = document.createElement('div');
-            messageBubble.className = `max-w-[70%] p-3 rounded-xl shadow-md message-bubble-shadow ${
+            messageBubble.className = `max-w-[75%] p-4 rounded-xl shadow-md message-bubble-shadow ${
                 msg.sender === 'user'
-                    ? 'bg-red-600 text-white rounded-br-none message-bubble-user' /* Added message-bubble-user for user glow */
-                    : 'bg-gray-700 text-white rounded-bl-none'
+                    ? 'bg-red-700 text-white rounded-br-none message-bubble-user'
+                    : 'bg-gray-800 text-white rounded-bl-none message-bubble-ai'
             }`;
 
             const messageText = document.createElement('p');
-            messageText.className = 'text-sm break-words';
-            messageText.textContent = msg.message;
+            messageText.className = 'text-base break-words leading-relaxed'; /* Slightly larger text, improved line height */
+            messageText.innerHTML = msg.message; // Use innerHTML to render markdown like **Chat Summary**
 
             const timestampText = document.createElement('p');
-            timestampText.className = 'text-xs mt-1 opacity-75 text-right';
+            timestampText.className = 'text-xs mt-1 opacity-75 text-right text-gray-300';
             timestampText.textContent = msg.timestamp?.toDate ? msg.timestamp.toDate().toLocaleTimeString() : 'Sending...';
 
             messageBubble.appendChild(messageText);
@@ -359,8 +507,44 @@
             return charCounts;
         };
 
+        // Function to call Gemini API
+        const callGeminiAPI = async (prompt, isStructured = false, schema = null) => {
+            const chatHistory = [{ role: "user", parts: [{ text: prompt }] }];
+            const payload = { contents: chatHistory };
+
+            if (isStructured && schema) {
+                payload.generationConfig = {
+                    responseMimeType: "application/json",
+                    responseSchema: schema
+                };
+            }
+
+            const apiKey = ""; // Canvas will provide this at runtime
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            const result = await response.json();
+
+            if (result.candidates && result.candidates.length > 0 &&
+                result.candidates[0].content && result.candidates[0].content.parts &&
+                result.candidates[0].content.parts.length > 0) {
+                const text = result.candidates[0].content.parts[0].text;
+                return isStructured ? JSON.parse(text) : text;
+            } else {
+                console.error("Gemini API response structure unexpected:", result);
+                throw new Error("Failed to get a valid response from AI.");
+            }
+        };
+
         // Function to send a message
         const sendMessage = async () => {
+            if (!messageInput || !sendButton || !rephraseButton) return; // Ensure elements exist
+
             const messageText = messageInput.value.trim();
             if (!messageText || !db || !currentUserId || !currentChatSessionId) {
                 console.warn("Cannot send message: Input is empty, DB not ready, or User ID/Chat Session is missing.");
@@ -370,16 +554,26 @@
             messageInput.value = '';
             messageInput.disabled = true;
             sendButton.disabled = true;
+            rephraseButton.disabled = true; // Disable rephrase button too
+            if (deepResearchButton) deepResearchButton.disabled = true; // Disable new buttons too
+            if (canvasButton) canvasButton.disabled = true;
+            if (attachFileButton) attachFileButton.disabled = true;
+            if (generateQuestionsButton) generateQuestionsButton.disabled = true;
+            if (brainstormIdeasButton) brainstormIdeasButton.disabled = true;
+            if (translateMessageButton) translateMessageButton.disabled = true;
+            if (expandMessageButton) expandMessageButton.disabled = true;
+            if (toggleMoreOptionsButton) toggleMoreOptionsButton.disabled = true;
+
 
             // Display a temporary loading indicator for AI response
             const aiLoadingIndicator = document.createElement('div');
             aiLoadingIndicator.id = 'ai-loading-indicator';
             aiLoadingIndicator.className = 'flex justify-start';
             aiLoadingIndicator.innerHTML = `
-                <div class="max-w-[70%] p-3 rounded-xl shadow-md bg-gray-700 text-white rounded-bl-none message-bubble-shadow">
+                <div class="max-w-[70%] p-4 rounded-xl shadow-md bg-gray-800 text-white rounded-bl-none message-bubble-shadow message-bubble-ai">
                     <div class="flex items-center">
-                        <div class="animate-spin rounded-full h-4 w-4 border-b-2 border-gray-500 mr-2"></div>
-                        <p class="text-sm">RC-chat is thinking...</p>
+                        <div class="animate-spin rounded-full h-5 w-5 border-b-2 border-gray-500 mr-3"></div>
+                        <p class="text-base">RC-chat is thinking<span class="loading-dot">.</span><span class="loading-dot">.</span><span class="loading-dot">.</span></p>
                     </div>
                 </div>
             `;
@@ -397,26 +591,11 @@
                 });
 
                 // 2. Call Gemini API for AI response
-                const chatHistory = [{ role: "user", parts: [{ text: messageText }] }];
-                const payload = { contents: chatHistory };
-                const apiKey = ""; // Canvas will provide this at runtime
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-
-                const response = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-
-                const result = await response.json();
                 let aiResponseText;
-
-                if (result.candidates && result.candidates.length > 0 &&
-                    result.candidates[0].content && result.candidates[0].content.parts &&
-                    result.candidates[0].content.parts.length > 0) {
-                    aiResponseText = result.candidates[0].content.parts[0].text;
-                } else {
-                    console.error("AI response structure unexpected:", result);
+                try {
+                    aiResponseText = await callGeminiAPI(messageText);
+                } catch (apiError) {
+                    console.error("Gemini API call failed:", apiError);
                     aiResponseText = "I'm sorry, I couldn't generate a response at this time. Please try again.";
                 }
 
@@ -443,8 +622,8 @@
                 const errorMessage = document.createElement('div');
                 errorMessage.className = 'flex justify-start';
                 errorMessage.innerHTML = `
-                    <div class="max-w-[70%] p-3 rounded-xl shadow-md bg-red-800 text-white rounded-bl-none message-bubble-shadow">
-                        <p class="text-sm">Error: Failed to send message or get AI response. Please check your internet connection and Firebase permissions. Details in console.</p>
+                    <div class="max-w-[70%] p-4 rounded-xl shadow-md bg-red-900 text-white rounded-bl-none message-bubble-shadow">
+                        <p class="text-base">Error: Failed to send message or get AI response. Please check your internet connection and Firebase permissions. Details in console.</p>
                     </div>
                 `;
                 messagesContainer.appendChild(errorMessage);
@@ -458,6 +637,15 @@
                 }
                 messageInput.disabled = false;
                 sendButton.disabled = false;
+                rephraseButton.disabled = false; // Re-enable rephrase button
+                if (deepResearchButton) deepResearchButton.disabled = false; // Re-enable new buttons
+                if (canvasButton) canvasButton.disabled = false;
+                if (attachFileButton) attachFileButton.disabled = false;
+                if (generateQuestionsButton) generateQuestionsButton.disabled = false;
+                if (brainstormIdeasButton) brainstormIdeasButton.disabled = false;
+                if (translateMessageButton) translateMessageButton.disabled = false;
+                if (expandMessageButton) expandMessageButton.disabled = false;
+                if (toggleMoreOptionsButton) toggleMoreOptionsButton.disabled = false;
                 messageInput.focus();
                 scrollToBottom();
             }
@@ -465,7 +653,7 @@
 
         // Function to load messages for a specific chat session
         const loadChatSession = async (sessionId) => {
-            if (!db || !currentUserId) return;
+            if (!db || !currentUserId || !messagesContainer || !loadingChatIndicator || !noChatSelectedMessage || !messageInput || !sendButton || !rephraseButton || !summarizeChatButton) return;
 
             currentChatSessionId = sessionId;
             messagesContainer.innerHTML = ''; // Clear previous messages
@@ -473,6 +661,17 @@
             noChatSelectedMessage.classList.add('hidden');
             messageInput.disabled = false; // Enable input and send button
             sendButton.disabled = false; // Enable input and send button
+            rephraseButton.disabled = false; // Enable rephrase button
+            summarizeChatButton.disabled = false; // Enable summarize button
+            if (deepResearchButton) deepResearchButton.disabled = false; // Enable new buttons
+            if (canvasButton) canvasButton.disabled = false;
+            if (attachFileButton) attachFileButton.disabled = false;
+            if (generateQuestionsButton) generateQuestionsButton.disabled = false;
+            if (brainstormIdeasButton) brainstormIdeasButton.disabled = false;
+            if (translateMessageButton) translateMessageButton.disabled = false;
+            if (expandMessageButton) expandMessageButton.disabled = false;
+            if (toggleMoreOptionsButton) toggleMoreOptionsButton.disabled = false;
+
 
             // Remove active class from all chat items
             document.querySelectorAll('#chat-list li').forEach(item => {
@@ -492,7 +691,7 @@
             onSnapshot(q, (snapshot) => {
                 messagesContainer.innerHTML = ''; // Clear existing messages before re-rendering
                 if (snapshot.empty) {
-                    messagesContainer.innerHTML = '<p class="text-gray-500 text-center">No messages in this chat yet. Start typing!</p>';
+                    messagesContainer.innerHTML = '<p class="text-gray-500 text-center text-lg">No messages in this chat yet. Start typing!</p>';
                 } else {
                     snapshot.docs.forEach(doc => {
                         displayMessage(doc.data());
@@ -503,7 +702,7 @@
             }, (error) => {
                 console.error("Error fetching messages for session:", sessionId, error);
                 loadingChatIndicator.classList.add('hidden');
-                messagesContainer.innerHTML = '<p class="text-red-400 text-center">Error loading messages.</p>';
+                messagesContainer.innerHTML = '<p class="text-red-400 text-center text-lg">Error loading messages.</p>';
             });
         };
 
@@ -531,6 +730,8 @@
 
         // Function to render chat sessions in the side panel
         const renderChatSessions = (sessions) => {
+            if (!chatList) return; // Ensure chatList exists
+
             chatList.innerHTML = '';
             if (sessions.length === 0) {
                 chatList.innerHTML = '<li class="text-gray-400 text-sm">No chats yet. Click "New Chat" to begin!</li>';
@@ -545,34 +746,703 @@
             });
         };
 
+        // Function to summarize the current chat
+        const summarizeChat = async () => {
+            if (!currentChatSessionId || !db || !currentUserId || !summarizeChatButton || !messageInput || !sendButton || !rephraseButton) {
+                console.warn("Cannot summarize chat: No chat session selected or DB/User ID/Buttons are missing.");
+                return;
+            }
+
+            summarizeChatButton.disabled = true;
+            messageInput.disabled = true;
+            sendButton.disabled = true;
+            rephraseButton.disabled = true;
+            if (deepResearchButton) deepResearchButton.disabled = true; // Disable new buttons too
+            if (canvasButton) canvasButton.disabled = true;
+            if (attachFileButton) attachFileButton.disabled = true;
+            if (generateQuestionsButton) generateQuestionsButton.disabled = true;
+            if (brainstormIdeasButton) brainstormIdeasButton.disabled = true;
+            if (translateMessageButton) translateMessageButton.disabled = true;
+            if (expandMessageButton) expandMessageButton.disabled = true;
+            if (toggleMoreOptionsButton) toggleMoreOptionsButton.disabled = true;
+
+
+            const aiLoadingIndicator = document.createElement('div');
+            aiLoadingIndicator.id = 'ai-loading-indicator-summary';
+            aiLoadingIndicator.className = 'flex justify-start';
+            aiLoadingIndicator.innerHTML = `
+                <div class="max-w-[70%] p-4 rounded-xl shadow-md bg-gray-800 text-white rounded-bl-none message-bubble-shadow message-bubble-ai">
+                    <div class="flex items-center">
+                        <div class="animate-spin rounded-full h-5 w-5 border-b-2 border-gray-500 mr-3"></div>
+                        <p class="text-base">Generating summary<span class="loading-dot">.</span><span class="loading-dot">.</span><span class="loading-dot">.</span></p>
+                    </div>
+                </div>
+            `;
+            messagesContainer.appendChild(aiLoadingIndicator);
+            scrollToBottom();
+
+            try {
+                const messagesCollectionRef = collection(db, `artifacts/${appId}/users/${currentUserId}/chatSessions/${currentChatSessionId}/messages`);
+                const q = query(messagesCollectionRef, orderBy('timestamp', 'asc'));
+                const snapshot = await getDocs(q); // Use getDocs for a one-time fetch
+                const chatHistory = snapshot.docs.map(doc => doc.data().message).join('\n');
+
+                const prompt = `Please summarize the following conversation concisely:\n\n${chatHistory}`;
+                const summary = await callGeminiAPI(prompt);
+
+                await addDoc(collection(db, `artifacts/${appId}/users/${currentUserId}/chatSessions/${currentChatSessionId}/messages`), {
+                    userId: currentUserId,
+                    sender: 'ai',
+                    message: `**Chat Summary:**\n${summary}`,
+                    timestamp: serverTimestamp()
+                });
+
+            } catch (error) {
+                console.error("Error summarizing chat:", error);
+                const errorMessage = document.createElement('div');
+                errorMessage.className = 'flex justify-start';
+                errorMessage.innerHTML = `
+                    <div class="max-w-[70%] p-4 rounded-xl shadow-md bg-red-900 text-white rounded-bl-none message-bubble-shadow">
+                        <p class="text-base">Error: Failed to summarize chat. Please try again.</p>
+                    </div>
+                `;
+                messagesContainer.appendChild(errorMessage);
+                scrollToBottom();
+            } finally {
+                const existingAiLoadingIndicator = document.getElementById('ai-loading-indicator-summary');
+                if (existingAiLoadingIndicator) {
+                    existingAiLoadingIndicator.remove();
+                }
+                summarizeChatButton.disabled = false;
+                messageInput.disabled = false;
+                sendButton.disabled = false;
+                rephraseButton.disabled = false;
+                if (deepResearchButton) deepResearchButton.disabled = false; // Re-enable new buttons
+                if (canvasButton) canvasButton.disabled = false;
+                if (attachFileButton) attachFileButton.disabled = false;
+                if (generateQuestionsButton) generateQuestionsButton.disabled = false;
+                if (brainstormIdeasButton) brainstormIdeasButton.disabled = false;
+                if (translateMessageButton) translateMessageButton.disabled = false;
+                if (expandMessageButton) expandMessageButton.disabled = false;
+                if (toggleMoreOptionsButton) toggleMoreOptionsButton.disabled = false;
+                messageInput.focus();
+                scrollToBottom();
+            }
+        };
+
+        // Function to rephrase the message in the input field
+        const rephraseMessage = async () => {
+            if (!messageInput || !sendButton || !rephraseButton) return; // Ensure elements exist
+
+            const originalText = messageInput.value.trim();
+            if (!originalText) {
+                console.warn("Nothing to rephrase: Input is empty.");
+                return;
+            }
+
+            messageInput.disabled = true;
+            sendButton.disabled = true;
+            rephraseButton.disabled = true;
+            if (deepResearchButton) deepResearchButton.disabled = true; // Disable new buttons too
+            if (canvasButton) canvasButton.disabled = true;
+            if (attachFileButton) attachFileButton.disabled = true;
+            if (generateQuestionsButton) generateQuestionsButton.disabled = true;
+            if (brainstormIdeasButton) brainstormIdeasButton.disabled = true;
+            if (translateMessageButton) translateMessageButton.disabled = true;
+            if (expandMessageButton) expandMessageButton.disabled = true;
+            if (toggleMoreOptionsButton) toggleMoreOptionsButton.disabled = true;
+
+            const originalPlaceholder = messageInput.placeholder;
+            messageInput.placeholder = "Rephrasing...";
+
+            try {
+                const prompt = `Rephrase the following text in a more engaging and clear way:\n\n"${originalText}"`;
+                const rephrasedText = await callGeminiAPI(prompt);
+                messageInput.value = rephrasedText;
+            } catch (error) {
+                console.error("Error rephrasing message:", error);
+                // Optionally display a temporary message to the user
+                messageInput.value = originalText; // Revert to original text
+                // Using alert for simplicity, could be a custom modal
+                const tempMessage = document.createElement('div');
+                tempMessage.className = 'flex justify-start';
+                tempMessage.innerHTML = `
+                    <div class="max-w-[70%] p-4 rounded-xl shadow-md bg-red-900 text-white rounded-bl-none message-bubble-shadow">
+                        <p class="text-base">Failed to rephrase message. Please try again.</p>
+                    </div>
+                `;
+                messagesContainer.appendChild(tempMessage);
+                scrollToBottom();
+                setTimeout(() => tempMessage.remove(), 3000); // Remove after 3 seconds
+            } finally {
+                messageInput.placeholder = originalPlaceholder;
+                messageInput.disabled = false;
+                sendButton.disabled = false;
+                rephraseButton.disabled = false;
+                if (deepResearchButton) deepResearchButton.disabled = false; // Re-enable new buttons
+                if (canvasButton) canvasButton.disabled = false;
+                if (attachFileButton) attachFileButton.disabled = false;
+                if (generateQuestionsButton) generateQuestionsButton.disabled = false;
+                if (brainstormIdeasButton) brainstormIdeasButton.disabled = false;
+                if (translateMessageButton) translateMessageButton.disabled = false;
+                if (expandMessageButton) expandMessageButton.disabled = false;
+                if (toggleMoreOptionsButton) toggleMoreOptionsButton.disabled = false;
+                messageInput.focus();
+            }
+        };
+
+        // Function to generate follow-up questions
+        const generateFollowUpQuestions = async () => {
+            if (!currentChatSessionId || !db || !currentUserId || !generateQuestionsButton) {
+                console.warn("Cannot generate questions: No chat session selected or DB/User ID/Button is missing.");
+                return;
+            }
+
+            // Disable all input/action buttons
+            messageInput.disabled = true;
+            sendButton.disabled = true;
+            rephraseButton.disabled = true;
+            summarizeChatButton.disabled = true;
+            if (deepResearchButton) deepResearchButton.disabled = true;
+            if (canvasButton) canvasButton.disabled = true;
+            if (attachFileButton) attachFileButton.disabled = true;
+            generateQuestionsButton.disabled = true;
+            if (brainstormIdeasButton) brainstormIdeasButton.disabled = true;
+            if (translateMessageButton) translateMessageButton.disabled = true;
+            if (expandMessageButton) expandMessageButton.disabled = true;
+            if (toggleMoreOptionsButton) toggleMoreOptionsButton.disabled = true;
+
+            const aiLoadingIndicator = document.createElement('div');
+            aiLoadingIndicator.id = 'ai-loading-indicator-questions';
+            aiLoadingIndicator.className = 'flex justify-start';
+            aiLoadingIndicator.innerHTML = `
+                <div class="max-w-[70%] p-4 rounded-xl shadow-md bg-gray-800 text-white rounded-bl-none message-bubble-shadow message-bubble-ai">
+                    <div class="flex items-center">
+                        <div class="animate-spin rounded-full h-5 w-5 border-b-2 border-gray-500 mr-3"></div>
+                        <p class="text-base">Generating questions<span class="loading-dot">.</span><span class="loading-dot">.</span><span class="loading-dot">.</span></p>
+                    </div>
+                </div>
+            `;
+            messagesContainer.appendChild(aiLoadingIndicator);
+            scrollToBottom();
+
+            try {
+                const messagesCollectionRef = collection(db, `artifacts/${appId}/users/${currentUserId}/chatSessions/${currentChatSessionId}/messages`);
+                const q = query(messagesCollectionRef, orderBy('timestamp', 'asc'));
+                const snapshot = await getDocs(q);
+                const chatHistory = snapshot.docs.map(doc => doc.data().message).join('\n');
+
+                const prompt = `Based on the following conversation, generate 3-5 insightful follow-up questions that could extend the discussion or explore related topics. Present them as a numbered list.\n\nConversation:\n${chatHistory}`;
+                const questions = await callGeminiAPI(prompt);
+
+                await addDoc(collection(db, `artifacts/${appId}/users/${currentUserId}/chatSessions/${currentChatSessionId}/messages`), {
+                    userId: currentUserId,
+                    sender: 'ai',
+                    message: `**Follow-up Questions:**\n${questions}`,
+                    timestamp: serverTimestamp()
+                });
+
+            } catch (error) {
+                console.error("Error generating follow-up questions:", error);
+                const errorMessage = document.createElement('div');
+                errorMessage.className = 'flex justify-start';
+                errorMessage.innerHTML = `
+                    <div class="max-w-[70%] p-4 rounded-xl shadow-md bg-red-900 text-white rounded-bl-none message-bubble-shadow">
+                        <p class="text-base">Error: Failed to generate follow-up questions. Please try again.</p>
+                    </div>
+                `;
+                messagesContainer.appendChild(errorMessage);
+                scrollToBottom();
+            } finally {
+                const existingAiLoadingIndicator = document.getElementById('ai-loading-indicator-questions');
+                if (existingAiLoadingIndicator) {
+                    existingAiLoadingIndicator.remove();
+                }
+                // Re-enable all input/action buttons
+                messageInput.disabled = false;
+                sendButton.disabled = false;
+                rephraseButton.disabled = false;
+                summarizeChatButton.disabled = false;
+                if (deepResearchButton) deepResearchButton.disabled = false;
+                if (canvasButton) canvasButton.disabled = false;
+                if (attachFileButton) attachFileButton.disabled = false;
+                generateQuestionsButton.disabled = false;
+                if (brainstormIdeasButton) brainstormIdeasButton.disabled = false;
+                if (translateMessageButton) translateMessageButton.disabled = false;
+                if (expandMessageButton) expandMessageButton.disabled = false;
+                if (toggleMoreOptionsButton) toggleMoreOptionsButton.disabled = false;
+                messageInput.focus();
+                scrollToBottom();
+            }
+        };
+
+        // Function to brainstorm ideas
+        const brainstormIdeas = async () => {
+            if (!currentChatSessionId || !db || !currentUserId || !brainstormIdeasButton) {
+                console.warn("Cannot brainstorm ideas: No chat session selected or DB/User ID/Button is missing.");
+                return;
+            }
+
+            // Disable all input/action buttons
+            messageInput.disabled = true;
+            sendButton.disabled = true;
+            rephraseButton.disabled = true;
+            summarizeChatButton.disabled = true;
+            if (deepResearchButton) deepResearchButton.disabled = true;
+            if (canvasButton) canvasButton.disabled = true;
+            if (attachFileButton) attachFileButton.disabled = true;
+            if (generateQuestionsButton) generateQuestionsButton.disabled = true;
+            brainstormIdeasButton.disabled = true;
+            if (translateMessageButton) translateMessageButton.disabled = true;
+            if (expandMessageButton) expandMessageButton.disabled = true;
+            if (toggleMoreOptionsButton) toggleMoreOptionsButton.disabled = true;
+
+            const aiLoadingIndicator = document.createElement('div');
+            aiLoadingIndicator.id = 'ai-loading-indicator-brainstorm';
+            aiLoadingIndicator.className = 'flex justify-start';
+            aiLoadingIndicator.innerHTML = `
+                <div class="max-w-[70%] p-4 rounded-xl shadow-md bg-gray-800 text-white rounded-bl-none message-bubble-shadow message-bubble-ai">
+                    <div class="flex items-center">
+                        <div class="animate-spin rounded-full h-5 w-5 border-b-2 border-gray-500 mr-3"></div>
+                        <p class="text-base">Brainstorming ideas<span class="loading-dot">.</span><span class="loading-dot">.</span><span class="loading-dot">.</span></p>
+                    </div>
+                </div>
+            `;
+            messagesContainer.appendChild(aiLoadingIndicator);
+            scrollToBottom();
+
+            try {
+                const messagesCollectionRef = collection(db, `artifacts/${appId}/users/${currentUserId}/chatSessions/${currentChatSessionId}/messages`);
+                const q = query(messagesCollectionRef, orderBy('timestamp', 'desc'), limit(5)); // Get last 5 messages for context
+                const snapshot = await getDocs(q);
+                const recentChatHistory = snapshot.docs.map(doc => doc.data().message).reverse().join('\n'); // Reverse to maintain chronological order
+
+                const prompt = `Given the context of our current conversation (last few messages below), brainstorm 5-7 creative ideas or suggestions related to the discussion. Present them as a bulleted list.\n\nRecent Conversation:\n${recentChatHistory}`;
+                const ideas = await callGeminiAPI(prompt);
+
+                await addDoc(collection(db, `artifacts/${appId}/users/${currentUserId}/chatSessions/${currentChatSessionId}/messages`), {
+                    userId: currentUserId,
+                    sender: 'ai',
+                    message: `**Brainstormed Ideas:**\n${ideas}`,
+                    timestamp: serverTimestamp()
+                });
+
+            } catch (error) {
+                console.error("Error brainstorming ideas:", error);
+                const errorMessage = document.createElement('div');
+                errorMessage.className = 'flex justify-start';
+                errorMessage.innerHTML = `
+                    <div class="max-w-[70%] p-4 rounded-xl shadow-md bg-red-900 text-white rounded-bl-none message-bubble-shadow">
+                        <p class="text-base">Error: Failed to brainstorm ideas. Please try again.</p>
+                    </div>
+                `;
+                messagesContainer.appendChild(errorMessage);
+                scrollToBottom();
+            } finally {
+                const existingAiLoadingIndicator = document.getElementById('ai-loading-indicator-brainstorm');
+                if (existingAiLoadingIndicator) {
+                    existingAiLoadingIndicator.remove();
+                }
+                // Re-enable all input/action buttons
+                messageInput.disabled = false;
+                sendButton.disabled = false;
+                rephraseButton.disabled = false;
+                summarizeChatButton.disabled = false;
+                if (deepResearchButton) deepResearchButton.disabled = false;
+                if (canvasButton) canvasButton.disabled = false;
+                if (attachFileButton) attachFileButton.disabled = false;
+                if (generateQuestionsButton) generateQuestionsButton.disabled = false;
+                brainstormIdeasButton.disabled = false;
+                if (translateMessageButton) translateMessageButton.disabled = false;
+                if (expandMessageButton) expandMessageButton.disabled = false;
+                if (toggleMoreOptionsButton) toggleMoreOptionsButton.disabled = false;
+                messageInput.focus();
+                scrollToBottom();
+            }
+        };
+
+        // Function to translate the message in the input field
+        const translateMessage = async () => {
+            if (!messageInput || !sendButton || !translateMessageButton) return;
+
+            const originalText = messageInput.value.trim();
+            if (!originalText) {
+                console.warn("Nothing to translate: Input is empty.");
+                return;
+            }
+
+            messageInput.disabled = true;
+            sendButton.disabled = true;
+            rephraseButton.disabled = true;
+            if (deepResearchButton) deepResearchButton.disabled = true;
+            if (canvasButton) canvasButton.disabled = true;
+            if (attachFileButton) attachFileButton.disabled = true;
+            if (generateQuestionsButton) generateQuestionsButton.disabled = true;
+            if (brainstormIdeasButton) brainstormIdeasButton.disabled = true;
+            translateMessageButton.disabled = true;
+            if (expandMessageButton) expandMessageButton.disabled = true;
+            if (toggleMoreOptionsButton) toggleMoreOptionsButton.disabled = true;
+
+            const originalPlaceholder = messageInput.placeholder;
+            messageInput.placeholder = "Translating...";
+
+            try {
+                // Prompt to translate to English. Could be extended with a language selector.
+                const prompt = `Translate the following text to English:\n\n"${originalText}"`;
+                const translatedText = await callGeminiAPI(prompt);
+                messageInput.value = translatedText;
+            } catch (error) {
+                console.error("Error translating message:", error);
+                messageInput.value = originalText; // Revert to original text
+                const tempMessage = document.createElement('div');
+                tempMessage.className = 'flex justify-start';
+                tempMessage.innerHTML = `
+                    <div class="max-w-[70%] p-4 rounded-xl shadow-md bg-red-900 text-white rounded-bl-none message-bubble-shadow">
+                        <p class="text-base">Failed to translate message. Please try again.</p>
+                    </div>
+                `;
+                messagesContainer.appendChild(tempMessage);
+                scrollToBottom();
+                setTimeout(() => tempMessage.remove(), 3000);
+            } finally {
+                messageInput.placeholder = originalPlaceholder;
+                messageInput.disabled = false;
+                sendButton.disabled = false;
+                rephraseButton.disabled = false;
+                if (deepResearchButton) deepResearchButton.disabled = false;
+                if (canvasButton) canvasButton.disabled = false;
+                if (attachFileButton) attachFileButton.disabled = false;
+                if (generateQuestionsButton) generateQuestionsButton.disabled = false;
+                if (brainstormIdeasButton) brainstormIdeasButton.disabled = false;
+                translateMessageButton.disabled = false;
+                if (expandMessageButton) expandMessageButton.disabled = false;
+                if (toggleMoreOptionsButton) toggleMoreOptionsButton.disabled = false;
+                messageInput.focus();
+            }
+        };
+
+        // Function to expand the message in the input field
+        const expandMessage = async () => {
+            if (!messageInput || !sendButton || !expandMessageButton) return;
+
+            const originalText = messageInput.value.trim();
+            if (!originalText) {
+                console.warn("Nothing to expand: Input is empty.");
+                return;
+            }
+
+            messageInput.disabled = true;
+            sendButton.disabled = true;
+            rephraseButton.disabled = true;
+            if (deepResearchButton) deepResearchButton.disabled = true;
+            if (canvasButton) canvasButton.disabled = true;
+            if (attachFileButton) attachFileButton.disabled = true;
+            if (generateQuestionsButton) generateQuestionsButton.disabled = true;
+            if (brainstormIdeasButton) brainstormIdeasButton.disabled = true;
+            if (translateMessageButton) translateMessageButton.disabled = true;
+            expandMessageButton.disabled = true;
+            if (toggleMoreOptionsButton) toggleMoreOptionsButton.disabled = true;
+
+            const originalPlaceholder = messageInput.placeholder;
+            messageInput.placeholder = "Expanding...";
+
+            try {
+                const prompt = `Expand on the following text, adding more detail, examples, or related concepts. Make it at least twice as long as the original, if possible, while remaining relevant:\n\n"${originalText}"`;
+                const expandedText = await callGeminiAPI(prompt);
+                messageInput.value = expandedText;
+            } catch (error) {
+                console.error("Error expanding message:", error);
+                messageInput.value = originalText; // Revert to original text
+                const tempMessage = document.createElement('div');
+                tempMessage.className = 'flex justify-start';
+                tempMessage.innerHTML = `
+                    <div class="max-w-[70%] p-4 rounded-xl shadow-md bg-red-900 text-white rounded-bl-none message-bubble-shadow">
+                        <p class="text-base">Failed to expand message. Please try again.</p>
+                    </div>
+                `;
+                messagesContainer.appendChild(tempMessage);
+                scrollToBottom();
+                setTimeout(() => tempMessage.remove(), 3000);
+            } finally {
+                messageInput.placeholder = originalPlaceholder;
+                messageInput.disabled = false;
+                sendButton.disabled = false;
+                rephraseButton.disabled = false;
+                if (deepResearchButton) deepResearchButton.disabled = false;
+                if (canvasButton) canvasButton.disabled = false;
+                if (attachFileButton) attachFileButton.disabled = false;
+                if (generateQuestionsButton) generateQuestionsButton.disabled = false;
+                if (brainstormIdeasButton) brainstormIdeasButton.disabled = false;
+                if (translateMessageButton) translateMessageButton.disabled = false;
+                expandMessageButton.disabled = false;
+                if (toggleMoreOptionsButton) toggleMoreOptionsButton.disabled = false;
+                messageInput.focus();
+            }
+        };
+
+
+        // Deep Research functionality
+        const handleDeepResearch = async () => {
+            if (!currentChatSessionId || !db || !currentUserId || !deepResearchButton) {
+                console.warn("Cannot perform deep research: No chat session selected or DB/User ID/Button is missing.");
+                return;
+            }
+
+            // Disable all input/action buttons
+            messageInput.disabled = true;
+            sendButton.disabled = true;
+            rephraseButton.disabled = true;
+            summarizeChatButton.disabled = true;
+            deepResearchButton.disabled = true;
+            if (canvasButton) canvasButton.disabled = true;
+            if (attachFileButton) attachFileButton.disabled = true;
+            if (generateQuestionsButton) generateQuestionsButton.disabled = true;
+            if (brainstormIdeasButton) brainstormIdeasButton.disabled = true;
+            if (translateMessageButton) translateMessageButton.disabled = true;
+            if (expandMessageButton) expandMessageButton.disabled = true;
+            if (toggleMoreOptionsButton) toggleMoreOptionsButton.disabled = true;
+
+            const aiLoadingIndicator = document.createElement('div');
+            aiLoadingIndicator.id = 'ai-loading-indicator-research';
+            aiLoadingIndicator.className = 'flex justify-start';
+            aiLoadingIndicator.innerHTML = `
+                <div class="max-w-[70%] p-4 rounded-xl shadow-md bg-gray-800 text-white rounded-bl-none message-bubble-shadow message-bubble-ai">
+                    <div class="flex items-center">
+                        <div class="animate-spin rounded-full h-5 w-5 border-b-2 border-gray-500 mr-3"></div>
+                        <p class="text-base">Performing deep research<span class="loading-dot">.</span><span class="loading-dot">.</span><span class="loading-dot">.</span></p>
+                    </div>
+                </div>
+            `;
+            messagesContainer.appendChild(aiLoadingIndicator);
+            scrollToBottom();
+
+            try {
+                const messagesCollectionRef = collection(db, `artifacts/${appId}/users/${currentUserId}/chatSessions/${currentChatSessionId}/messages`);
+                const q = query(messagesCollectionRef, orderBy('timestamp', 'desc'), limit(10)); // Get last 10 messages for context
+                const snapshot = await getDocs(q);
+                const recentChatHistory = snapshot.docs.map(doc => doc.data().message).reverse().join('\n');
+
+                const prompt = `Perform deep research on the main topic(s) discussed in the following conversation. Provide a comprehensive summary of key facts, concepts, and potential next steps or related areas to explore. Format your response clearly with headings and bullet points.\n\nConversation:\n${recentChatHistory}`;
+                const researchResult = await callGeminiAPI(prompt);
+
+                await addDoc(collection(db, `artifacts/${appId}/users/${currentUserId}/chatSessions/${currentChatSessionId}/messages`), {
+                    userId: currentUserId,
+                    sender: 'ai',
+                    message: `**Deep Research Results:**\n${researchResult}`,
+                    timestamp: serverTimestamp()
+                });
+
+            } catch (error) {
+                console.error("Error performing deep research:", error);
+                const errorMessage = document.createElement('div');
+                errorMessage.className = 'flex justify-start';
+                errorMessage.innerHTML = `
+                    <div class="max-w-[70%] p-4 rounded-xl shadow-md bg-red-900 text-white rounded-bl-none message-bubble-shadow">
+                        <p class="text-base">Error: Failed to perform deep research. Please try again.</p>
+                    </div>
+                `;
+                messagesContainer.appendChild(errorMessage);
+                scrollToBottom();
+            } finally {
+                const existingAiLoadingIndicator = document.getElementById('ai-loading-indicator-research');
+                if (existingAiLoadingIndicator) {
+                    existingAiLoadingIndicator.remove();
+                }
+                // Re-enable all input/action buttons
+                messageInput.disabled = false;
+                sendButton.disabled = false;
+                rephraseButton.disabled = false;
+                summarizeChatButton.disabled = false;
+                deepResearchButton.disabled = false;
+                if (canvasButton) canvasButton.disabled = false;
+                if (attachFileButton) attachFileButton.disabled = false;
+                if (generateQuestionsButton) generateQuestionsButton.disabled = false;
+                if (brainstormIdeasButton) brainstormIdeasButton.disabled = false;
+                if (translateMessageButton) translateMessageButton.disabled = false;
+                if (expandMessageButton) expandMessageButton.disabled = false;
+                if (toggleMoreOptionsButton) toggleMoreOptionsButton.disabled = false;
+                messageInput.focus();
+                scrollToBottom();
+            }
+        };
+
+        // Canvas functionality
+        const handleCanvas = () => {
+            if (!canvasModal || !drawingCanvas) return;
+            canvasModal.style.display = 'flex';
+            // Ensure canvas dimensions are set correctly when modal is shown
+            resizeCanvas();
+        };
+
+        const closeCanvas = () => {
+            if (canvasModal) {
+                canvasModal.style.display = 'none';
+            }
+        };
+
+        const resizeCanvas = () => {
+            if (drawingCanvas && drawingCanvas.parentElement) {
+                drawingCanvas.width = drawingCanvas.parentElement.clientWidth - 56; // Account for padding
+                drawingCanvas.height = drawingCanvas.parentElement.clientHeight - 150; // Account for header/footer/padding
+            }
+        };
+
+        const startDrawing = (e) => {
+            isDrawing = true;
+            [lastX, lastY] = [e.offsetX || e.touches[0].clientX - drawingCanvas.getBoundingClientRect().left, e.offsetY || e.touches[0].clientY - drawingCanvas.getBoundingClientRect().top];
+        };
+
+        const draw = (e) => {
+            if (!isDrawing) return;
+            ctx.beginPath();
+            ctx.moveTo(lastX, lastY);
+            ctx.lineTo(e.offsetX || e.touches[0].clientX - drawingCanvas.getBoundingClientRect().left, e.offsetY || e.touches[0].clientY - drawingCanvas.getBoundingClientRect().top);
+            ctx.strokeStyle = '#ef4444'; // Red drawing color
+            ctx.lineWidth = 3;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            ctx.stroke();
+            [lastX, lastY] = [e.offsetX || e.touches[0].clientX - drawingCanvas.getBoundingClientRect().left, e.offsetY || e.touches[0].clientY - drawingCanvas.getBoundingClientRect().top];
+        };
+
+        const stopDrawing = () => {
+            isDrawing = false;
+        };
+
+        const clearCanvas = () => {
+            if (ctx && drawingCanvas) {
+                ctx.clearRect(0, 0, drawingCanvas.width, drawingCanvas.height);
+            }
+        };
+
+        // Attach File functionality
+        const handleAttachFile = () => {
+            if (fileInput) {
+                fileInput.click(); // Trigger the hidden file input click
+            }
+        };
+
+        const handleFileSelected = async (event) => {
+            const files = event.target.files;
+            if (files.length > 0 && db && currentUserId && currentChatSessionId) {
+                const fileName = files[0].name;
+                const message = `Attached file: **${fileName}**`;
+
+                await addDoc(collection(db, `artifacts/${appId}/users/${currentUserId}/chatSessions/${currentChatSessionId}/messages`), {
+                    userId: currentUserId,
+                    sender: 'ai', // Display as AI message for confirmation
+                    message: message,
+                    timestamp: serverTimestamp()
+                });
+                scrollToBottom();
+            }
+        };
+
+        // Function to toggle visibility of more options
+        const toggleMoreOptions = () => {
+            if (moreOptionsContainer) {
+                moreOptionsContainer.classList.toggle('hidden');
+                moreOptionsContainer.classList.toggle('show'); // For fade-in-out animation
+                // Re-enable/disable buttons within the container based on its visibility and chat session status
+                const areButtonsEnabled = currentChatSessionId !== null;
+                const buttonsInContainer = moreOptionsContainer.querySelectorAll('button');
+                buttonsInContainer.forEach(button => {
+                    button.disabled = !moreOptionsContainer.classList.contains('show') || !areButtonsEnabled;
+                });
+            }
+        };
+
+
         // Initialize Firebase and set up authentication listener
         window.onload = function () {
+            // Assign DOM elements here to ensure they are available
+            messagesContainer = document.getElementById('messages-container');
+            messageInput = document.getElementById('message-input');
+            sendButton = document.getElementById('send-button');
+            userIdDisplay = document.getElementById('user-id-display');
+            newChatButton = document.getElementById('new-chat-button');
+            chatList = document.getElementById('chat-list');
+            settingsButton = document.getElementById('settings-button');
+            settingsModal = document.getElementById('settings-modal');
+            closeModalButton = settingsModal ? settingsModal.querySelector('.close-button') : null;
+            aiApiSelect = document.getElementById('ai-api-select');
+            saveSettingsButton = document.getElementById('save-settings-button');
+            loadingChatIndicator = document.getElementById('loading-chat-indicator');
+            noChatSelectedMessage = document.getElementById('no-chat-selected-message');
+            firebaseStatusDisplay = document.getElementById('firebase-status');
+            summarizeChatButton = document.getElementById('summarize-chat-button');
+            rephraseButton = document.getElementById('rephrase-button');
+            // New buttons assignment
+            deepResearchButton = document.getElementById('deep-research-button');
+            canvasButton = document.getElementById('canvas-button');
+            attachFileButton = document.getElementById('attach-file-button');
+            generateQuestionsButton = document.getElementById('generate-questions-button');
+            brainstormIdeasButton = document.getElementById('brainstorm-ideas-button');
+            translateMessageButton = document.getElementById('translate-message-button');
+            expandMessageButton = document.getElementById('expand-message-button');
+            toggleMoreOptionsButton = document.getElementById('toggle-more-options-button');
+            moreOptionsContainer = document.getElementById('more-options-container');
+
+            // Canvas elements assignment
+            canvasModal = document.getElementById('canvas-modal');
+            closeCanvasButton = document.getElementById('close-canvas-button');
+            drawingCanvas = document.getElementById('drawingCanvas');
+            clearCanvasButton = document.getElementById('clear-canvas-button');
+
+            // Create hidden file input
+            fileInput = document.createElement('input');
+            fileInput.type = 'file';
+            fileInput.style.display = 'none';
+            document.body.appendChild(fileInput);
+
+
+            // Initial state for buttons and displays
+            if (newChatButton) newChatButton.disabled = true;
+            if (settingsButton) settingsButton.disabled = true;
+            if (messageInput) messageInput.disabled = true;
+            if (sendButton) sendButton.disabled = true;
+            if (summarizeChatButton) summarizeChatButton.disabled = true;
+            if (rephraseButton) rephraseButton.disabled = true;
+            if (deepResearchButton) deepResearchButton.disabled = true;
+            if (canvasButton) canvasButton.disabled = true;
+            if (attachFileButton) attachFileButton.disabled = true;
+            if (generateQuestionsButton) generateQuestionsButton.disabled = true;
+            if (brainstormIdeasButton) brainstormIdeasButton.disabled = true;
+            if (translateMessageButton) translateMessageButton.disabled = true;
+            if (expandMessageButton) expandMessageButton.disabled = true;
+            if (toggleMoreOptionsButton) toggleMoreOptionsButton.disabled = true;
+
             try {
                 // Check if firebaseConfig.projectId is still the placeholder value
                 if (!firebaseConfig.projectId || firebaseConfig.projectId === "YOUR_PROJECT_ID") {
-                    firebaseStatusDisplay.textContent = "Firebase Config Missing! Please update the code.";
+                    if (firebaseStatusDisplay) firebaseStatusDisplay.textContent = "Firebase Config Missing! Please update the code.";
                     console.error("Firebase Initialization Error: 'projectId' not provided in firebaseConfig. Please update the firebaseConfig object in the script with your actual Firebase project details. You can find this in your Firebase project settings -> 'Your apps' section (click the web icon if you don't have a web app yet).");
-                    // Disable all interactive elements if Firebase config is missing
-                    newChatButton.disabled = true;
-                    settingsButton.disabled = true;
-                    messageInput.disabled = true;
-                    sendButton.disabled = true;
                     return; // Stop further Firebase initialization
                 }
 
                 const app = initializeApp(firebaseConfig);
                 db = getFirestore(app);
                 auth = getAuth(app);
-                firebaseStatusDisplay.textContent = "Firebase Connected. Authenticating...";
+                if (firebaseStatusDisplay) firebaseStatusDisplay.textContent = "Firebase Connected. Authenticating...";
 
                 onAuthStateChanged(auth, async (user) => {
                     console.log("onAuthStateChanged triggered. User:", user); // Diagnostic log
                     if (user) {
                         currentUserId = user.uid;
-                        userIdDisplay.textContent = `Your User ID: ${currentUserId}`;
-                        newChatButton.disabled = false; // Enable New Chat button
-                        settingsButton.disabled = false; // Enable Settings button
-                        firebaseStatusDisplay.textContent = "Authenticated.";
+                        if (userIdDisplay) userIdDisplay.textContent = `Your User ID: ${currentUserId}`;
+                        if (newChatButton) newChatButton.disabled = false; // Enable New Chat button
+                        if (settingsButton) settingsButton.disabled = false; // Enable Settings button
+                        if (summarizeChatButton) summarizeChatButton.disabled = false; // Enable summarize button
+                        if (rephraseButton) rephraseButton.disabled = false; // Enable rephrase button
+                        if (deepResearchButton) deepResearchButton.disabled = false; // Enable new buttons
+                        if (canvasButton) canvasButton.disabled = false;
+                        if (attachFileButton) attachFileButton.disabled = false;
+                        if (generateQuestionsButton) generateQuestionsButton.disabled = false;
+                        if (brainstormIdeasButton) brainstormIdeasButton.disabled = false;
+                        if (translateMessageButton) translateMessageButton.disabled = false;
+                        if (expandMessageButton) expandMessageButton.disabled = false;
+                        if (toggleMoreOptionsButton) toggleMoreOptionsButton.disabled = false;
+                        if (firebaseStatusDisplay) firebaseStatusDisplay.textContent = "Authenticated.";
 
                         // Listen for chat sessions for the current user under their private path
                         const chatSessionsCollectionRef = collection(db, `artifacts/${appId}/users/${currentUserId}/chatSessions`);
@@ -595,7 +1465,7 @@
                             }
                         }, (error) => {
                             console.error("Error fetching chat sessions:", error);
-                            firebaseStatusDisplay.textContent = "Error fetching chats. Check console and Firebase rules.";
+                            if (firebaseStatusDisplay) firebaseStatusDisplay.textContent = "Error fetching chats. Check console and Firebase rules.";
                         });
 
                     } else {
@@ -623,52 +1493,111 @@
                             }
                         } catch (signInError) {
                             console.error("Error during authentication attempt:", signInError);
-                            userIdDisplay.textContent = "Authentication failed. Please check console.";
-                            firebaseStatusDisplay.textContent = "Authentication Failed.";
-                            newChatButton.disabled = true; // Keep disabled on auth failure
-                            settingsButton.disabled = true; // Keep disabled on auth failure
-                            messageInput.disabled = true;
-                            sendButton.disabled = true;
+                            if (userIdDisplay) userIdDisplay.textContent = "Authentication failed. Please check console.";
+                            if (firebaseStatusDisplay) firebaseStatusDisplay.textContent = "Authentication Failed.";
+                            if (newChatButton) newChatButton.disabled = true; // Keep disabled on auth failure
+                            if (settingsButton) settingsButton.disabled = true; // Keep disabled on auth failure
+                            if (messageInput) messageInput.disabled = true;
+                            if (sendButton) sendButton.disabled = true;
+                            if (summarizeChatButton) summarizeChatButton.disabled = true; // Disable new buttons too
+                            if (rephraseButton) rephraseButton.disabled = true; // Disable new buttons too
+                            if (deepResearchButton) deepResearchButton.disabled = true;
+                            if (canvasButton) canvasButton.disabled = true;
+                            if (attachFileButton) attachFileButton.disabled = true;
+                            if (generateQuestionsButton) generateQuestionsButton.disabled = true;
+                            if (brainstormIdeasButton) brainstormIdeasButton.disabled = true;
+                            if (translateMessageButton) translateMessageButton.disabled = true;
+                            if (expandMessageButton) expandMessageButton.disabled = true;
+                            if (toggleMoreOptionsButton) toggleMoreOptionsButton.disabled = true;
                         }
                     }
                 });
             } catch (error) {
                 console.error("Error initializing Firebase:", error);
-                firebaseStatusDisplay.textContent = "Firebase Init Failed. Check console.";
-                userIdDisplay.textContent = "Firebase initialization failed.";
+                if (firebaseStatusDisplay) firebaseStatusDisplay.textContent = "Firebase Init Failed. Check console.";
+                if (userIdDisplay) userIdDisplay.textContent = "Firebase initialization failed.";
+            }
+
+            // Event Listeners - only add if elements exist
+            if (sendButton) sendButton.addEventListener('click', sendMessage);
+            if (messageInput) {
+                messageInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        sendMessage();
+                    }
+                });
+            }
+            if (newChatButton) newChatButton.addEventListener('click', startNewChat);
+            if (summarizeChatButton) summarizeChatButton.addEventListener('click', summarizeChat);
+            if (rephraseButton) rephraseButton.addEventListener('click', rephraseMessage);
+            // New button event listeners
+            if (deepResearchButton) deepResearchButton.addEventListener('click', handleDeepResearch);
+            if (canvasButton) canvasButton.addEventListener('click', handleCanvas);
+            if (attachFileButton) attachFileButton.addEventListener('click', handleAttachFile);
+            if (generateQuestionsButton) generateQuestionsButton.addEventListener('click', generateFollowUpQuestions);
+            if (brainstormIdeasButton) brainstormIdeasButton.addEventListener('click', brainstormIdeas);
+            if (translateMessageButton) translateMessageButton.addEventListener('click', translateMessage);
+            if (expandMessageButton) expandMessageButton.addEventListener('click', expandMessage);
+            if (toggleMoreOptionsButton) toggleMoreOptionsButton.addEventListener('click', toggleMoreOptions);
+
+            // Canvas event listeners
+            if (closeCanvasButton) closeCanvasButton.addEventListener('click', closeCanvas);
+            if (clearCanvasButton) clearCanvasButton.addEventListener('click', clearCanvas);
+            if (drawingCanvas) {
+                ctx = drawingCanvas.getContext('2d');
+                resizeCanvas(); // Set initial canvas size
+                window.addEventListener('resize', resizeCanvas); // Resize canvas with window
+
+                drawingCanvas.addEventListener('mousedown', startDrawing);
+                drawingCanvas.addEventListener('mousemove', draw);
+                drawingCanvas.addEventListener('mouseup', stopDrawing);
+                drawingCanvas.addEventListener('mouseout', stopDrawing); // Stop drawing if mouse leaves canvas
+
+                // Touch events for canvas
+                drawingCanvas.addEventListener('touchstart', (e) => {
+                    e.preventDefault(); // Prevent scrolling
+                    startDrawing(e.touches[0]);
+                });
+                drawingCanvas.addEventListener('touchmove', (e) => {
+                    e.preventDefault(); // Prevent scrolling
+                    draw(e.touches[0]);
+                });
+                drawingCanvas.addEventListener('touchend', stopDrawing);
+            }
+
+            // File input event listener
+            if (fileInput) fileInput.addEventListener('change', handleFileSelected);
+
+
+            if (settingsButton) {
+                settingsButton.addEventListener('click', () => {
+                    if (aiApiSelect) aiApiSelect.value = selectedAiModel; // Set current selection
+                    if (settingsModal) settingsModal.style.display = 'flex';
+                });
+            }
+
+            if (closeModalButton) {
+                closeModalButton.addEventListener('click', () => {
+                    if (settingsModal) settingsModal.style.display = 'none';
+                });
+            }
+
+            if (settingsModal) {
+                window.addEventListener('click', (event) => {
+                    if (event.target === settingsModal) {
+                        settingsModal.style.display = 'none';
+                    }
+                });
+            }
+
+            if (saveSettingsButton) {
+                saveSettingsButton.addEventListener('click', () => {
+                    if (aiApiSelect) selectedAiModel = aiApiSelect.value;
+                    console.log("AI Model set to:", selectedAiModel);
+                    if (settingsModal) settingsModal.style.display = 'none';
+                });
             }
         };
-
-        // Event Listeners
-        sendButton.addEventListener('click', sendMessage);
-        messageInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                sendMessage();
-            }
-        });
-        newChatButton.addEventListener('click', startNewChat);
-
-        // Settings Modal Logic
-        settingsButton.addEventListener('click', () => {
-            aiApiSelect.value = selectedAiModel; // Set current selection
-            settingsModal.style.display = 'flex';
-        });
-
-        closeModalButton.addEventListener('click', () => {
-            settingsModal.style.display = 'none';
-        });
-
-        window.addEventListener('click', (event) => {
-            if (event.target === settingsModal) {
-                settingsModal.style.display = 'none';
-            }
-        });
-
-        saveSettingsButton.addEventListener('click', () => {
-            selectedAiModel = aiApiSelect.value;
-            console.log("AI Model set to:", selectedAiModel);
-            settingsModal.style.display = 'none';
-        });
 
     </script>
 </body>
